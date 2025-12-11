@@ -11,7 +11,9 @@ const ProductsList = () => {
     .catch(error => {
       console.error('error fetching products: ', error);
       setError(error)
-    });
+    })
+  }, []);
+
   
   if (error) {
     return <p>Error fetching products: {error.message}</p>
