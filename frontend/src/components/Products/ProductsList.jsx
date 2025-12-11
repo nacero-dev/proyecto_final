@@ -3,11 +3,10 @@ import { useEffect, useState } from "react";
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
 
-  // De momento usamos datos de prueba. Luego conectaremos con la API.
   useEffect(() => {
     setProducts([
       { _id: "1", name: "Producto A", price: 10, stock: 5 },
-      { _id: "2", name: "Producto B", price: 20, stock: 3 },
+      { _id: "2", name: "Producto B", price: 20, stock: 3 }
     ]);
   }, []);
 

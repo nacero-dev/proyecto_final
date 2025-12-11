@@ -1,28 +1,11 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routers/routers";
 
 function App() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/products`
-        );
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error al obtener productos", error);
-      }
-    };
-
-    loadProducts();
-  }, []);
-
   return (
     <div>
-      <h1>Gestor de Productos</h1>
-      {/* aquí tu render */}
+      <h1 style={{ textAlign: "center" }}>Gestor de Productos</h1>
+      <RouterProvider router={router} />
     </div>
   );
 }

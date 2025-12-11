@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 const ProductDetail = () => {
   const { id } = useParams();
 
-  // Más adelante aquí haremos un fetch a la API con el id.
   return (
     <div>
       <h2>Detalle del producto</h2>
