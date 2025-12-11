@@ -1,4 +1,3 @@
-import { set } from "mongoose";
 import { useEffect, useState } from "react";
 
 const ProductsList = () => {
