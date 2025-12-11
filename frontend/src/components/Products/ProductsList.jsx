@@ -5,7 +5,7 @@ const ProductsList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${process.env.API_URL}/products`)
+    fetch(`${import.meta.env.VITE_API_URL}/products`)
     .then(response => response.json())
     .then(data => setProducts(data))
     .catch(error => {
