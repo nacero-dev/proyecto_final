@@ -5,9 +5,20 @@ const cors = require("cors");
 
 const app = express();
 
-// Middlewares
+// Configurar CORS para permitir los dominios del frontend en Vercel
+app.use(
+  cors({
+    origin: [
+      "https://proyecto-final-mu-dun.vercel.app",   // frontend desarrollo
+      "https://proyecto-final-front-dev.vercel.app" // frontend producción
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+// Middleware para leer JSON
 app.use(express.json());
-app.use(cors());
 
 // Variables de entorno
 const PORT = process.env.PORT || 4000;
