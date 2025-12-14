@@ -1,3 +1,5 @@
+const authMiddleware = require("../middlewares/authMiddleware");
+
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
