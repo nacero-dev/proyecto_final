@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "@/const/api"; /*@*/
+
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
@@ -7,10 +9,11 @@ const ProductsList = () => {
   const [message, setMessage] = useState("");
   const token = localStorage.getItem("token");
   const isAdmin = localStorage.getItem("isAdmin") === "true";
+  
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+      const response = await fetch(`${API_URL}/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -42,14 +45,14 @@ const ProductsList = () => {
         return;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${id}`, {
+      const response = await fetch(`${API_URL}/products/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
-      setProducts(products.filter((p) => p._id !== id));
+      setProducts(products.filter((p) => p._id !== id)); /*@ p.*/
       setMessage("Producto eliminado correctamente.");
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {

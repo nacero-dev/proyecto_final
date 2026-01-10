@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { API_URL } from "@/const/api"; /*@*/
 
 const ProductCreate = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const ProductCreate = () => {
       if (!id) return;
       try {
         setLoading(true);
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${id}`, {
+        const response = await fetch(`${API_URL}/products/${id}`, { 
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -47,8 +48,8 @@ const ProductCreate = () => {
     e.preventDefault();
     setMessage("");
     const url = id
-      ? `${import.meta.env.VITE_API_URL}/products/${id}`
-      : `${import.meta.env.VITE_API_URL}/products`;
+      ? `${API_URL}/products/${id}` 
+      : `${API_URL}/products`; 
     const method = id ? "PUT" : "POST";
 
     try {

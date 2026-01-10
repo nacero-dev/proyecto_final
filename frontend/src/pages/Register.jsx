@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "@/const/api";
 
 const Register = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -15,7 +16,7 @@ const Register = () => {
     setSuccess("");
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
+      const response = await fetch(`${API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

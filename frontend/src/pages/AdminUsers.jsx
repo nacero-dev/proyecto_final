@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { API_URL } from "@/const/api"; /*@*/
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -10,7 +11,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/users`, {
+      const res = await fetch(`${API_URL}/admin/users`, { 
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Error al cargar los usuarios");
@@ -25,7 +26,7 @@ const AdminUsers = () => {
 
   const toggleRole = async (id) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/${id}/role`, {
+      const res = await fetch(`${API_URL}/admin/users/${id}/role`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -40,7 +41,7 @@ const AdminUsers = () => {
 
   const deleteUser = async (id) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/${id}`, {
+      const res = await fetch(`${API_URL}/admin/users/${id}`, { 
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

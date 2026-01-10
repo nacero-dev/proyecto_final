@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { API_URL } from "@/const/api"; /*@*/
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -12,11 +13,11 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${id}`, {
+        const response = await fetch(`${API_URL}/products/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        }); 
 
         if (!response.ok) {
           if (response.status === 404) throw new Error("Producto no encontrado.");
@@ -34,7 +35,7 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [id, token]); /*@*/
 
   if (loading) {
     return (
