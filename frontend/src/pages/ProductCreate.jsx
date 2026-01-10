@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { API_URL } from "@/const/api"; /*@*/
+import { API_URL } from "@/const/api";
 
 const ProductCreate = () => {
   const { id } = useParams();

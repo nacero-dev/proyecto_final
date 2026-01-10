@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API_URL } from "@/const/api"; /*@*/
+import { API_URL } from "@/const/api";
 
 
 const ProductsList = () => {
@@ -52,7 +52,7 @@ const ProductsList = () => {
 
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
-      setProducts(products.filter((p) => p._id !== id)); /*@ p.*/
+      setProducts(products.filter((product) => product._id !== id));
       setMessage("Producto eliminado correctamente.");
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {

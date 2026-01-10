@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { API_URL } from "@/const/api"; /*@*/
+import { API_URL } from "@/const/api";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -35,7 +35,7 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-  }, [id, token]); /*@*/
+  }, [id, token]);
 
   if (loading) {
     return (

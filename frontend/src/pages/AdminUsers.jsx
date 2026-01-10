@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { API_URL } from "@/const/api"; /*@*/
+import { API_URL } from "@/const/api";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
