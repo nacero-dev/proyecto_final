@@ -15,49 +15,41 @@ const Layout = () => {
     navigate("/admin/users");
   };
 
-  const goToProducts = () => {
-    navigate("/products");
-  };
-
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <button type="button" className="navbar-brand btn btn-link text-white p-0" onClick={goToProducts}>
+          <a className="navbar-brand" href="/products">
             Gestor de Productos
-          </button>
+          </a>
 
-          <div className="d-flex align-items-center">
+          <div className="d-flex">
             {isAuthenticated && (
-              <>
-                {isAdmin && (
-                  <>
-                    <span className="text-light me-3">Modo: Administrador</span>
-
-                    <button
-                      type="button"
-                      className="btn btn-outline-info btn-sm me-2"
-                      onClick={goToUsers}
-                    >
-                      Usuarios
-                    </button>
-                  </>
-                )}
-
-                <button
-                  type="button"
-                  className="btn btn-outline-light btn-sm"
-                  onClick={handleLogout}
-                >
-                  Cerrar sesión
-                </button>
-              </>
+              <button
+                type="button"
+                className="btn btn-outline-light btn-sm"
+                onClick={handleLogout}
+              >
+                Cerrar sesión
+              </button>
             )}
           </div>
         </div>
       </nav>
 
       <main className="container mt-4">
+        {isAuthenticated && isAdmin && (
+          <div className="d-flex justify-content-end mb-3">
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm"
+              onClick={goToUsers}
+            >
+              Administrar usuarios
+            </button>
+          </div>
+        )}
+
         <Outlet />
       </main>
     </div>
