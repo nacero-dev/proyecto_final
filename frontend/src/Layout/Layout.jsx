@@ -11,21 +11,41 @@ const Layout = () => {
     navigate("/login");
   };
 
+  const goToUsers = () => {
+    navigate("/admin/users");
+  };
+
+  const goToProducts = () => {
+    navigate("/products");
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <a className="navbar-brand" href="/products">
+          <button type="button" className="navbar-brand btn btn-link text-white p-0" onClick={goToProducts}>
             Gestor de Productos
-          </a>
+          </button>
 
-          <div className="d-flex">
+          <div className="d-flex align-items-center">
             {isAuthenticated && (
               <>
                 {isAdmin && (
-                  <span className="text-light me-3">Modo: Administrador</span>
+                  <>
+                    <span className="text-light me-3">Modo: Administrador</span>
+
+                    <button
+                      type="button"
+                      className="btn btn-outline-info btn-sm me-2"
+                      onClick={goToUsers}
+                    >
+                      Usuarios
+                    </button>
+                  </>
                 )}
+
                 <button
+                  type="button"
                   className="btn btn-outline-light btn-sm"
                   onClick={handleLogout}
                 >
@@ -47,7 +67,7 @@ const Layout = () => {
 export default Layout;
 
 
-/*@anterior*/
+/*@*/
 
 // const Layout = () => {
 //   const navigate = useNavigate();
