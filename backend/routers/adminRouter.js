@@ -2,6 +2,8 @@ const express = require("express");
 const User = require("../models/userModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const roleMiddleware = require("../middlewares/roleMiddleware");
+const notFound = require("../middlewares/not-found");
+const errorHandler = require("../middlewares/error-handler");
 
 const router = express.Router();
 
@@ -46,5 +48,8 @@ router.delete("/users/:id", authMiddleware, roleMiddleware, async (req, res) => 
     res.status(500).json({ message: "Error al eliminar usuario" });
   }
 });
+
+router.use(notFound);
+router.use(errorHandler);
 
 module.exports = router;

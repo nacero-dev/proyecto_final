@@ -57,10 +57,12 @@ app.get("/", (req, res) => {
   res.json({ mensaje: "API Gestor de Productos funcionando correctamente" });
 });
 
-// Ruta por defecto para rutas inexistentes
-app.use((req, res) => {
-  res.status(404).json({ error: "Ruta no encontrada" });
-});
+// Middlewares de errores
+const notFound = require("./middlewares/not-found");
+const errorHandler = require("./middlewares/error-handler");
+
+app.use(notFound);
+app.use(errorHandler);
 
 // Iniciar servidor
 app.listen(PORT, () => {

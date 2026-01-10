@@ -2,6 +2,8 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const notFound = require("../middlewares/not-found");
+const errorHandler = require("../middlewares/error-handler");
 
 const router = express.Router();
 
@@ -77,4 +79,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
+router.use(notFound);
+router.use(errorHandler);
 module.exports = router;

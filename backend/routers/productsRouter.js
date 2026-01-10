@@ -4,6 +4,8 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/productsModel");
 const authMiddleware = require("../middlewares/authMiddleware");
+const notFound = require("../middlewares/not-found");
+const errorHandler = require("../middlewares/error-handler");
 
 // Todas las rutas de productos requieren estar autenticado
 router.use(authMiddleware);
@@ -80,5 +82,8 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: "Error al eliminar producto" });
   }
 });
+
+router.use(notFound);
+router.use(errorHandler);
 
 module.exports = router;
