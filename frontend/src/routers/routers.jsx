@@ -1,12 +1,12 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import Layout from "@/Layout/Layout.jsx";
-import ProductsList from "@/components/Products/ProductsList.jsx";
-import ProductDetail from "@/components/Products/ProductDetail.jsx";
-import ProductCreate from "@/components/Products/ProductCreate.jsx";
-import Login from "@/components/Auth/Login.jsx";
-import Register from "@/components/Auth/Register.jsx";
-import AdminUsers from "@/components/Admin/AdminUsers.jsx";
+import ProductsList from "@/pages/ProductsList.jsx";
+import ProductDetail from "@/pages/ProductDetail.jsx";
+import ProductCreate from "@/pages/ProductCreate.jsx";
+import Login from "@/pages/Login.jsx";
+import Register from "@/pages/Register.jsx";
+import AdminUsers from "@/pages/AdminUsers.jsx";
 
 
 
