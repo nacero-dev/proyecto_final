@@ -1,13 +1,16 @@
-const authMiddleware = require("../middlewares/authMiddleware");
+/*“Validación básica en Mongoose: required + tipos + mínimos (price/stock >= 0)”.*/
 
 const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  stock: { type: Number, required: true },
-  description: { type: String }
-});
+const productSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    price: { type: Number, required: true, min: 0 },
+    stock: { type: Number, required: true, min: 0 },
+    description: { type: String, default: "", trim: true },
+  },
+  { timestamps: true }
+);
 
 const Product = mongoose.model("Product", productSchema);
 
