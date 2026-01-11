@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const seedAdminUser = require("./seed/seed-admin");
+
 
 
 const app = express();
@@ -35,14 +37,35 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
+/*@*/
 // Conexión a MongoDB
+// mongoose
+//   .connect(MONGO_URI)
+//   .then(() => console.log("MongoDB conectado correctamente"))
+//   .catch((error) => {
+//     console.error("Error al conectar con MongoDB:", error);
+//     process.exit(1);
+//   });
+
 mongoose
   .connect(MONGO_URI)
-  .then(() => console.log("MongoDB conectado correctamente"))
+  .then(async () => {
+    console.log("MongoDB conectado correctamente");
+
+    try {
+      await seedAdminUser();
+    } catch (error) {
+      console.log("Seed admin falló");
+    }
+  })
   .catch((error) => {
     console.error("Error al conectar con MongoDB:", error);
     process.exit(1);
   });
+/*@*/
+
+
+
 
 // Routers
 const authRouter = require("./routers/authRouter");

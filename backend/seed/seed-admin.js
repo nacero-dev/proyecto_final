@@ -1,0 +1,22 @@
+const bcrypt = require("bcryptjs");
+const User = require("../models/userModel");
+
+const seedAdminUser = async () => {
+  const email = process.env.SEED_ADMIN_EMAIL;
+  const password = process.env.SEED_ADMIN_PASSWORD;
+
+  if (!email || !password) return;
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) return;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await User.create({
+    email,
+    password: hashedPassword,
+    isAdmin: true,
+  });
+};
+
+module.exports = seedAdminUser;
