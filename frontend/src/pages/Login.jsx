@@ -1,3 +1,4 @@
+/*@*/
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -23,7 +24,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/login`, { 
+      const response = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -49,52 +50,80 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">Iniciar sesión</h2>
-
-      {error && <div className="alert alert-danger">{error}</div>}
-      {success && <div className="alert alert-success">{success}</div>}
-
-      <form onSubmit={handleSubmit} className="mx-auto" style={{ maxWidth: "400px" }}>
-        <div className="mb-3">
-          <label className="form-label">Correo electrónico</label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            className="form-control"
-            required
-            disabled={loading}
+    <div className="min-vh-100 d-flex w-100 overflow-hidden">
+      {/* Columna izquierda (solo desktop) */}
+      <div style={{ width: "60vw" }} className="d-none d-lg-flex flex-column">
+        <div style={{ height: "50vh", overflow: "hidden" }}>
+          <img
+            src="/vehicles/hero.webp"
+            alt="SuperAutos"
+            className="w-100 h-100"
+            style={{ objectFit: "cover" }}
           />
         </div>
 
-        <div className="mb-3">
-          <label className="form-label">Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            className="form-control"
-            required
-            disabled={loading}
-          />
+        <div
+          className="d-flex align-items-center justify-content-center text-white"
+          style={{ backgroundColor: "#0f4c5c", flex: 1 }}
+        >
+          <div className="text-center p-4">
+            <h1 className="display-4 fw-bold mb-0">SuperAutos</h1>
+            <h2 className="display-5 fw-light">Portal de Empresa</h2>
+          </div>
         </div>
+      </div>
 
-        <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-          {loading ? "Ingresando..." : "Iniciar sesión"}
-        </button>
+      {/* Columna derecha */}
+      <div className="flex-grow-1 d-flex align-items-center justify-content-center p-4">
+        <div style={{ width: "100%", maxWidth: "420px" }}>
+          <h2 className="text-center mb-4">Iniciar sesión</h2>
 
-        <p className="text-center mt-3">
-          ¿No tienes cuenta?{" "}
-          <a href="/register" className="text-primary">
-            Regístrate aquí
-          </a>
-        </p>
-      </form>
+          {error && <div className="alert alert-danger">{error}</div>}
+          {success && <div className="alert alert-success">{success}</div>}
+
+          <form onSubmit={handleSubmit} className="mx-auto">
+            <div className="mb-3">
+              <label className="form-label">Correo electrónico</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                className="form-control"
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Contraseña</label>
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                className="form-control"
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+              {loading ? "Ingresando..." : "Iniciar sesión"}
+            </button>
+
+            <p className="text-center mt-3">
+              ¿No tienes cuenta?{" "}
+              <a href="/register" className="text-primary">
+                Regístrate aquí
+              </a>
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Login;
+/*@*/

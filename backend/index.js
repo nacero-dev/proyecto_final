@@ -37,16 +37,6 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
-/*@*/
-// Conexión a MongoDB
-// mongoose
-//   .connect(MONGO_URI)
-//   .then(() => console.log("MongoDB conectado correctamente"))
-//   .catch((error) => {
-//     console.error("Error al conectar con MongoDB:", error);
-//     process.exit(1);
-//   });
-
 mongoose
   .connect(MONGO_URI)
   .then(async () => {
@@ -62,7 +52,7 @@ mongoose
     console.error("Error al conectar con MongoDB:", error);
     process.exit(1);
   });
-/*@*/
+
 
 
 

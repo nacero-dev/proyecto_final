@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth"; 
+import { useAuth } from "@/hooks/useAuth";
 
 
 const Layout = () => {
@@ -17,8 +17,8 @@ const Layout = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark"> {/* @ */}
+        <div className="container-fluid px-4">
           <a className="navbar-brand" href="/products">
             Inicio
           </a>
@@ -37,7 +37,7 @@ const Layout = () => {
         </div>
       </nav>
 
-      <main className="container mt-4">
+      <main className="container-fluid mt-4 px-4"> {/* @ */}
         {isAuthenticated && isAdmin && (
           <div className="d-flex justify-content-end mb-3">
             <button
