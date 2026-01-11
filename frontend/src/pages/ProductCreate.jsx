@@ -53,7 +53,7 @@ const ProductCreate = () => {
           lastServiceDate: toDateInputValue(data.lastServiceDate),
         });
       } catch (error) {
-        setMessage("Error al cargar el vehiculo para editar.");
+        setMessage("Error al cargar el vehiculo para editar");
       } finally {
         setLoading(false);
       }
@@ -83,13 +83,13 @@ const ProductCreate = () => {
 
       if (!response.ok) {
         if (response.status === 403)
-          throw new Error("Solo los administradores pueden crear o editar productos.");
+          throw new Error("Solo los administradores pueden crear o editar Vehiculos");
         throw new Error(`Error HTTP: ${response.status}`);
       }
 
       navigate("/products");
     } catch (error) {
-      setMessage(error.message || "Error al guardar el producto.");
+      setMessage(error.message || "Error al guardar el Vehiculo");
     }
   };
 

@@ -20,7 +20,7 @@ const Layout = () => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
           <a className="navbar-brand" href="/products">
-            Gestor de Productos
+            Inicio
           </a>
 
           <div className="d-flex">

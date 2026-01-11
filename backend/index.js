@@ -59,7 +59,7 @@ app.use("/admin", adminRouter);
 
 // Ruta raíz
 app.get("/", (req, res) => {
-  res.json({ mensaje: "API Gestor de Productos funcionando correctamente" });
+  res.json({ mensaje: "API funcionando correctamente" });
 });
 
 // Middlewares de errores

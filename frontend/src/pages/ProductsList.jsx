@@ -25,14 +25,14 @@ const ProductsList = () => {
       });
 
       if (!response.ok) {
-        if (response.status === 401) throw new Error("No autorizado: inicia sesión.");
+        if (response.status === 401) throw new Error("No autorizado: inicia sesión");
         throw new Error(`Error HTTP: ${response.status}`);
       }
 
       const data = await response.json();
       setProducts(data);
     } catch (err) {
-      setError(err.message || "No se pudieron cargar los productos.");
+      setError(err.message || "No se pudieron cargar los Vehículos");
     } finally {
       setLoading(false);
     }
@@ -45,7 +45,7 @@ const ProductsList = () => {
   const handleDelete = async (id) => {
     try {
       if (!isAdmin) {
-        setMessage("No tienes permisos para eliminar productos.");
+        setMessage("No tienes permisos para eliminar Vehículos");
         return;
       }
 
@@ -57,10 +57,10 @@ const ProductsList = () => {
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
       setProducts(products.filter((product) => product._id !== id));
-      setMessage("Producto eliminado correctamente.");
+      setMessage("Vehículo eliminado correctamente");
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      setError("No se pudo eliminar el producto.");
+      setError("No se pudo eliminar el Vehículo");
     }
   };
 
@@ -79,7 +79,7 @@ const ProductsList = () => {
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-info">{message}</div>}
 
-      <h2 className="mb-4 text-center">Lista de productos</h2>
+      <h2 className="mb-4 text-center">Inventario de Vehículos</h2>
 
       {isAdmin && (
         <div className="text-end mb-3">
@@ -90,7 +90,7 @@ const ProductsList = () => {
       )}
 
       {products.length === 0 ? (
-        <div className="alert alert-warning text-center">No hay vehículos disponibles.</div>
+        <div className="alert alert-warning text-center">No hay vehículos disponibles</div>
       ) : (
         <div className="table-responsive">
           <table className="table table-striped align-middle">

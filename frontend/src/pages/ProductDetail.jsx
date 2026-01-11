@@ -29,9 +29,9 @@ const ProductDetail = () => {
         });
 
         if (!response.ok) {
-          if (response.status === 404) throw new Error("Producto no encontrado.");
-          if (response.status === 401) throw new Error("No autorizado.");
-          throw new Error("Error al obtener el producto.");
+          if (response.status === 404) throw new Error("Vehiculo no encontrado");
+          if (response.status === 401) throw new Error("No autorizado");
+          throw new Error("Error al obtener el Vehiculo");
         }
 
         const data = await response.json();
@@ -50,7 +50,7 @@ const ProductDetail = () => {
     setMessage("");
 
     if (!isAdmin) {
-      setMessage("No tienes permisos para eliminar vehículos.");
+      setMessage("No tienes permisos para eliminar vehículos");
       return;
     }
 
@@ -90,7 +90,7 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="container mt-4">
-        <div className="alert alert-warning">No se encontró el producto.</div>
+        <div className="alert alert-warning">No se encontró el vehiculo</div>
       </div>
     );
   }

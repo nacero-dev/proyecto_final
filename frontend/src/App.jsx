@@ -4,7 +4,7 @@ import { router } from "@/routers/routers";
 function App() {
   return (
     <div>
-      <h1 style={{ textAlign: "center" }}>Gestor de Productos</h1>
+      <h1 style={{ textAlign: "center" }}>Gestor de Vehículos</h1>
       <RouterProvider router={router} />
     </div>
   );
