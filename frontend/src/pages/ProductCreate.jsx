@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { API_URL } from "@/const/api";
+import { VEHICLE_IMAGES } from "@/const/vehicle-images";
 
 const ProductCreate = () => {
   const { id } = useParams();
@@ -11,6 +12,7 @@ const ProductCreate = () => {
     price: "",
     stock: "",
     description: "",
+    imageUrl: "", 
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -30,6 +32,7 @@ const ProductCreate = () => {
           price: data.price || "",
           stock: data.stock || "",
           description: data.description || "",
+          imageUrl: data.imageUrl || "",
         });
       } catch (error) {
         setMessage("Error al cargar el producto para editar.");
@@ -38,7 +41,7 @@ const ProductCreate = () => {
       }
     };
     fetchProduct();
-  }, [id]);
+  }, [id, token]); /*@por alguna razon se quito se lo vuelvo a poner*/
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,9 +50,7 @@ const ProductCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-    const url = id
-      ? `${API_URL}/products/${id}` 
-      : `${API_URL}/products`; 
+    const url = id ? `${API_URL}/products/${id}` : `${API_URL}/products`; 
     const method = id ? "PUT" : "POST";
 
     try {
@@ -78,9 +79,7 @@ const ProductCreate = () => {
     <div className="container mt-4">
       {message && <div className="alert alert-danger">{message}</div>}
 
-      <h2 className="mb-4 text-center">
-        {id ? "Editar producto" : "Crear producto"}
-      </h2>
+      <h2 className="mb-4 text-center">{id ? "Editar producto" : "Crear producto"}</h2>
 
       {loading ? (
         <div className="text-center">
@@ -99,6 +98,7 @@ const ProductCreate = () => {
               value={form.name}
               onChange={handleChange}
               required
+              placeholder="Ej: Ferrari Enzo 2021"
             />
           </div>
 
@@ -111,6 +111,7 @@ const ProductCreate = () => {
               value={form.price}
               onChange={handleChange}
               required
+              min="0"
             />
           </div>
 
@@ -123,6 +124,7 @@ const ProductCreate = () => {
               value={form.stock}
               onChange={handleChange}
               required
+              min="0"
             />
           </div>
 
@@ -134,7 +136,40 @@ const ProductCreate = () => {
               name="description"
               value={form.description}
               onChange={handleChange}
+              placeholder="Ej: Gasolina · Manual · 500 CV · Amarillo"
             />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Imagen</label>
+            <select
+              className="form-select"
+              name="imageUrl"
+              value={form.imageUrl}
+              onChange={handleChange}
+            >
+              <option value="">Sin imagen</option>
+              {VEHICLE_IMAGES.map((img) => (
+                <option key={img.value} value={img.value}>
+                  {img.label}
+                </option>
+              ))}
+            </select>
+
+            {form.imageUrl && (
+              <div className="mt-3">
+                <img
+                  src={form.imageUrl}
+                  alt="Vista previa"
+                  style={{
+                    width: "100%",
+                    maxHeight: "220px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           <button type="submit" className="btn btn-primary w-100">
