@@ -2,8 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const helmet = require("helmet");
 
 const app = express();
+
+app.use(helmet());
 
 // Configurar CORS para permitir los dominios del frontend en Vercel
 app.use(
