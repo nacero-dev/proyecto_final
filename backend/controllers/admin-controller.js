@@ -1,44 +1,44 @@
-/* En el backend se separa la lógica en routers y controllers.
-Los routers (backend/routers/) definen las rutas y aplican middlewares (JWT y roles).
-Los controllers (backend/controllers/) contienen la lógica de cada endpoint (consultas a MongoDB con Mongoose, validaciones básicas y respuestas).
-Esto mejora la organización y facilita el mantenimiento del código.
-*/
+// Controller de administracion de usuarios
+// El control de acceso (JWT + rol admin) se aplica en el router con authMiddleware y roleMiddleware y en este punto ya se tiene acceso al control de usuarios
 
 const User = require("../models/user-model");
 
-// Obtener todos los usuarios (solo admin)
+// Devuelve la lista de usuarios registrados
+// Excluye el campo password por seguridad
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
-    res.json(users);
+    const users = await User.find().select("-password"); //trae a todos los usuarios registrados -password  evita devolver la contraseña 
+    res.json(users); // se obtiene el JSON para poder renderizar la lista de usuarios
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener usuarios" });
+    res.status(500).json({ message: "Error al obtener usuarios" }); 
   }
 };
 
-// Cambiar rol de usuario (admin <-> visor)
+// Modificacion de roles (visor/admin)
 const toggleUserRole = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id); //se busca el id del usuario a modificar :id/role
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    user.isAdmin = !user.isAdmin;
-    await user.save();
-
-    res.json({ message: "Rol actualizado correctamente", user });
+    user.isAdmin = !user.isAdmin; //alternacion de valor booleano entre administrador y visor
+    await user.save(); //guarda cambios en MongoDB
+    
+    res.json({ message: "Rol actualizado correctamente", user }); 
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar rol" });
   }
 };
 
 // Eliminar usuario
+// Elimina un usuario por su id
+
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findByIdAndDelete(req.params.id); //Encuentra el id del usuario y lo elimina (el documento)
     if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
+      return res.status(404).json({ message: "Usuario no encontrado" }); //en caso de que el usuario no exista no se puede eliminar por lo tanto 404 NOT FOUND
     }
     res.json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
@@ -46,8 +46,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  getUsers,
-  toggleUserRole,
-  deleteUser,
-};
+module.exports = { getUsers, toggleUserRole, deleteUser,};

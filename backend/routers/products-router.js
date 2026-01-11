@@ -6,53 +6,54 @@ const notFound = require("../middlewares/not-found");
 const errorHandler = require("../middlewares/error-handler");
 
 
-const {
-  getProducts,
-  createProduct,
-  getProductById,
-  updateProduct,
-  deleteProduct,
-  filterProducts
-} = require("../controllers/products-controller");
+const { getProducts, createProduct, getProductById, updateProduct, deleteProduct, filterProducts } = require("../controllers/products-controller");
 
-// Todas las rutas de productos requieren estar autenticado
+// aqui se controla quien ve que de acuerdo al rol que tiene (inventario de vehículos):
+// getProducts: obtener todo el inventario
+// filterProducts: filtrado por operadores de MongoDB
+// getProductById: detalle por id
+// createProduct, updateProduct, deleteProduct: CRUD (acciones protegidas para admin)
+
+// Se establece de entrada la condicion de que todas las rutas requieren estar autenticado, se ejecuta en caso inexistente de autorizacion ({ message: "Acceso no autorizado, token no enviado" }); O ({ message: "Token inválido o expirado" }) segun sea el caso dentreo de ese middleware
 router.use(authMiddleware);
 
-// Obtener todos los productos
+// Obtener todos los vehículos
 router.get("/", getProducts);
 
-// filtro de productos 
+// filtro por operadores de Mongo como q, minPrice, etc
 router.get("/filter", filterProducts);
 
-// Obtener un producto por ID
+// Obtener un vehiculo por ID (da el detalle del vehiculo "la card")
 router.get("/:id", getProductById);
 
-// Crear un producto (solo admin)
+// Apartir de aqui es CRUD SOLO ADMIN!:
+
+// Crear un vehiculo (solo admin tiene acceso a añadir vehiculo), se valida si tiene los accesos del token en caso contrario es error 403
 router.post("/", (req, res) => {
   if (!req.user.isAdmin) {
     return res
       .status(403)
-      .json({ message: "Solo los administradores pueden crear productos" });
+      .json({ message: "Solo los administradores pueden crear vehiculos" });
   }
   return createProduct(req, res);
 });
 
-// Actualizar un producto (solo admin)
+// Actualizar un vehiculo (solo admin tiene acceso a editar vehiculos)
 router.put("/:id", (req, res) => {
   if (!req.user.isAdmin) {
     return res
       .status(403)
-      .json({ message: "Solo los administradores pueden editar productos" });
+      .json({ message: "Solo los administradores pueden editar vehiculos" });
   }
   return updateProduct(req, res);
 });
 
-// Eliminar un producto (solo admin)
+// Eliminar un vehiuculo (solo admin)
 router.delete("/:id", (req, res) => {
   if (!req.user.isAdmin) {
     return res
       .status(403)
-      .json({ message: "Solo los administradores pueden eliminar productos" });
+      .json({ message: "Solo los administradores pueden eliminar vehiculos" });
   }
   return deleteProduct(req, res);
 });

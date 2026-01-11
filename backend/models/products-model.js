@@ -1,6 +1,9 @@
-/*“Validación básica en Mongoose: required + tipos + mínimos (price/stock >= 0)”.*/
+// Validación en MOngoose
+// Este schema define la estructura de cada vehículo dentro de MongoDB
 
 const mongoose = require("mongoose");
+
+
 
 const productSchema = new mongoose.Schema(
   {
@@ -15,6 +18,11 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+//Campos relevantes:
+//description: default:"" si no se especifica por defecto queda vacio
+//imageURL: default:"" si no se especifica por defecto queda vacio
+//mileage: kilometraje por defecto es 0 y es 0 el minimo
 
 
 const Product = mongoose.model("Product", productSchema);

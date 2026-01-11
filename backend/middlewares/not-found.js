@@ -1,3 +1,5 @@
+// Middleware para rutas inexistentes (404)
+
 const notFound = (req, res, next) => {
   res.status(404).json({
     error: "Not Found",
