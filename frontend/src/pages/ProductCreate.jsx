@@ -41,7 +41,7 @@ const ProductCreate = () => {
       }
     };
     fetchProduct();
-  }, [id, token]); /*@por alguna razon se quito se lo vuelvo a poner*/
+  }, [id, token]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -79,7 +79,7 @@ const ProductCreate = () => {
     <div className="container mt-4">
       {message && <div className="alert alert-danger">{message}</div>}
 
-      <h2 className="mb-4 text-center">{id ? "Editar producto" : "Crear producto"}</h2>
+      <h2 className="mb-4 text-center">{id ? "Editar vehículo" : "Crear vehículo"}</h2>
 
       {loading ? (
         <div className="text-center">
