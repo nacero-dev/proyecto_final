@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
+const User = require("../models/user-model");
 
 const authCheck = (req, res) => {
   res.json({ message: "Auth router activo" });

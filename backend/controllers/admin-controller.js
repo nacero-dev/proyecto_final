@@ -4,7 +4,7 @@ Los controllers (backend/controllers/) contienen la lógica de cada endpoint (co
 Esto mejora la organización y facilita el mantenimiento del código.
 */
 
-const User = require("../models/userModel");
+const User = require("../models/user-model");
 
 // Obtener todos los usuarios (solo admin)
 const getUsers = async (req, res) => {

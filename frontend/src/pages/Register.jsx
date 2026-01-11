@@ -1,4 +1,3 @@
-/*@*/
 import { useState } from "react";
 import { API_URL } from "@/const/api";
 
@@ -111,4 +110,3 @@ const Register = () => {
 };
 
 export default Register;
-/*@*/

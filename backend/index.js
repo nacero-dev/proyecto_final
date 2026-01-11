@@ -58,9 +58,9 @@ mongoose
 
 
 // Routers
-const authRouter = require("./routers/authRouter");
-const productsRouter = require("./routers/productsRouter");
-const adminRouter = require("./routers/adminRouter");
+const authRouter = require("./routers/auth-router");
+const productsRouter = require("./routers/products-router");
+const adminRouter = require("./routers/admin-router");
 
 
 

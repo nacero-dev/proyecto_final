@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const User = require("../models/userModel");
+const User = require("../models/user-model");
 
 const seedAdminUser = async () => {
   const email = process.env.ORIGIN_ADMIN_EMAIL;

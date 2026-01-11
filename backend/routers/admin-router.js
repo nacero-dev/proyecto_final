@@ -1,6 +1,6 @@
 const express = require("express");
-const authMiddleware = require("../middlewares/authMiddleware");
-const roleMiddleware = require("../middlewares/roleMiddleware");
+const authMiddleware = require("../middlewares/auth-middleware");
+const roleMiddleware = require("../middlewares/role-middleware");
 const notFound = require("../middlewares/not-found");
 const errorHandler = require("../middlewares/error-handler");
 
@@ -8,7 +8,7 @@ const {
   getUsers,
   toggleUserRole,
   deleteUser,
-} = require("../controllers/adminController");
+} = require("../controllers/admin-controller");
 
 const router = express.Router();
 

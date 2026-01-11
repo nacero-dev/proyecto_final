@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const authMiddleware = require("../middlewares/authMiddleware");
+const authMiddleware = require("../middlewares/auth-middleware");
 const notFound = require("../middlewares/not-found");
 const errorHandler = require("../middlewares/error-handler");
 
@@ -13,7 +13,7 @@ const {
   updateProduct,
   deleteProduct,
   filterProducts
-} = require("../controllers/productsController");
+} = require("../controllers/products-controller");
 
 // Todas las rutas de productos requieren estar autenticado
 router.use(authMiddleware);
