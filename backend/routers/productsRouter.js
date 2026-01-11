@@ -5,12 +5,14 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const notFound = require("../middlewares/not-found");
 const errorHandler = require("../middlewares/error-handler");
 
+
 const {
   getProducts,
   createProduct,
   getProductById,
   updateProduct,
   deleteProduct,
+  filterProducts
 } = require("../controllers/productsController");
 
 // Todas las rutas de productos requieren estar autenticado
@@ -18,6 +20,9 @@ router.use(authMiddleware);
 
 // Obtener todos los productos
 router.get("/", getProducts);
+
+// filtro de productos 
+router.get("/filter", filterProducts);
 
 // Obtener un producto por ID
 router.get("/:id", getProductById);

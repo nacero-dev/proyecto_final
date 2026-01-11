@@ -73,10 +73,43 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+
+// Consulta de productos () “Se añadió un endpoint de filtrado /products/filter que recibe parámetros por query string (q, minPrice, maxPrice, minStock) y usa operadores MongoDB $regex, $gte, $lte para obtener productos específicos.”
+
+const filterProducts = async (req, res) => {
+  try {
+    const { q, minPrice, maxPrice, minStock } = req.query;
+
+    const filter = {};
+
+    if (q) {
+      filter.name = { $regex: q, $options: "i" };  // "i" insensitive búsqueda sin distinguir mayúsculas/minúsculas.
+    }
+
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
+
+    if (minStock) {
+      filter.stock = { $gte: Number(minStock) };
+    }
+
+    const products = await Product.find(filter);
+    res.json(products);
+  } catch (error) {
+    console.error("Error al filtrar productos:", error);
+    res.status(500).json({ message: "Error al filtrar productos" });
+  }
+};
+
+
 module.exports = {
   getProducts,
   createProduct,
   getProductById,
   updateProduct,
   deleteProduct,
+  filterProducts, 
 };
