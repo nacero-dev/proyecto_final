@@ -35,7 +35,7 @@ const ProductCreate = () => {
           imageUrl: data.imageUrl || "",
         });
       } catch (error) {
-        setMessage("Error al cargar el producto para editar.");
+        setMessage("Error al cargar el vehiculo para editar.");
       } finally {
         setLoading(false);
       }
