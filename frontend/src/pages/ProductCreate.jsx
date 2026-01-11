@@ -3,6 +3,18 @@ import { useState, useEffect } from "react";
 import { API_URL } from "@/const/api";
 import { VEHICLE_IMAGES } from "@/const/vehicle-images";
 
+
+const toDateInputValue = (value) => {
+  if (!value) return "";
+  // caso ISO string (lo más común), sirve slice(0,10)
+  if (typeof value === "string") return value.slice(0, 10);
+  // caso Date
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toISOString().slice(0, 10);
+};
+
+
 const ProductCreate = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,6 +25,9 @@ const ProductCreate = () => {
     stock: "",
     description: "",
     imageUrl: "", 
+    mileage: "",
+    itvDate: "",
+    lastServiceDate: "",
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -33,6 +48,9 @@ const ProductCreate = () => {
           stock: data.stock || "",
           description: data.description || "",
           imageUrl: data.imageUrl || "",
+          mileage: data.mileage ?? "",
+          itvDate: toDateInputValue(data.itvDate),
+          lastServiceDate: toDateInputValue(data.lastServiceDate),
         });
       } catch (error) {
         setMessage("Error al cargar el vehiculo para editar.");
@@ -98,33 +116,72 @@ const ProductCreate = () => {
               value={form.name}
               onChange={handleChange}
               required
-              placeholder="Ej: Ferrari Enzo 2021"
+              placeholder="Ej: Lamborghini Huracán 2018"
             />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">Precio (€)</label>
-            <input
-              type="number"
-              className="form-control"
-              name="price"
-              value={form.price}
-              onChange={handleChange}
-              required
-              min="0"
-            />
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Precio (€)</label>
+              <input
+                type="number"
+                className="form-control"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+                required
+                min="0"
+              />
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Stock (unidades)</label>
+              <input
+                type="number"
+                className="form-control"
+                name="stock"
+                value={form.stock}
+                onChange={handleChange}
+                required
+                min="0"
+              />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Kilometraje (km)</label>
+              <input
+                type="number"
+                className="form-control"
+                name="mileage"
+                value={form.mileage}
+                onChange={handleChange}
+                min="0"
+                placeholder="Ej: 32500"
+              />
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Última ITV</label>
+              <input
+                type="date"
+                className="form-control"
+                name="itvDate"
+                value={form.itvDate}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Stock</label>
+            <label className="form-label">Último servicio</label>
             <input
-              type="number"
+              type="date"
               className="form-control"
-              name="stock"
-              value={form.stock}
+              name="lastServiceDate"
+              value={form.lastServiceDate}
               onChange={handleChange}
-              required
-              min="0"
             />
           </div>
 
@@ -136,7 +193,7 @@ const ProductCreate = () => {
               name="description"
               value={form.description}
               onChange={handleChange}
-              placeholder="Ej: Gasolina · Manual · 500 CV · Amarillo"
+              placeholder="Ej: Gasolina · Automático · 610 CV · Negro"
             />
           </div>
 
