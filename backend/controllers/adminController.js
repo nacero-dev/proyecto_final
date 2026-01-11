@@ -12,7 +12,6 @@ const getUsers = async (req, res) => {
     const users = await User.find().select("-password");
     res.json(users);
   } catch (error) {
-    console.error("Error al obtener usuarios:", error);
     res.status(500).json({ message: "Error al obtener usuarios" });
   }
 };
@@ -30,7 +29,6 @@ const toggleUserRole = async (req, res) => {
 
     res.json({ message: "Rol actualizado correctamente", user });
   } catch (error) {
-    console.error("Error al actualizar rol:", error);
     res.status(500).json({ message: "Error al actualizar rol" });
   }
 };
@@ -44,7 +42,6 @@ const deleteUser = async (req, res) => {
     }
     res.json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
-    console.error("Error al eliminar usuario:", error);
     res.status(500).json({ message: "Error al eliminar usuario" });
   }
 };

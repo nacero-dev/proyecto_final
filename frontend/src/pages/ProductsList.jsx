@@ -27,7 +27,6 @@ const ProductsList = () => {
       const data = await response.json();
       setProducts(data);
     } catch (err) {
-      console.error("Error al obtener productos:", err);
       setError(err.message || "No se pudieron cargar los productos.");
     } finally {
       setLoading(false);
@@ -56,7 +55,6 @@ const ProductsList = () => {
       setMessage("Producto eliminado correctamente.");
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      console.error("Error al eliminar producto:", err);
       setError("No se pudo eliminar el producto.");
     }
   };

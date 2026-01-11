@@ -3,10 +3,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
+const morgan = require("morgan");
+
 
 const app = express();
 
 app.use(helmet());
+app.use(morgan("dev"));
 
 // Configurar CORS para permitir los dominios del frontend en Vercel
 app.use(
@@ -29,7 +32,6 @@ const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  console.error("Falta la variable de entorno MONGO_URI");
   process.exit(1);
 }
 

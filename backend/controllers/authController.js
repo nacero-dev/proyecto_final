@@ -31,7 +31,6 @@ const registerUser = async (req, res) => {
 
     res.status(201).json({ message: "Usuario registrado correctamente" });
   } catch (error) {
-    console.error("Error al registrar:", error);
     res.status(500).json({ message: "Error al registrar usuario" });
   }
 };
@@ -67,7 +66,6 @@ const loginUser = async (req, res) => {
       isAdmin: user.isAdmin,
     });
   } catch (error) {
-    console.error("Error en login:", error);
     res.status(500).json({ message: "Error al iniciar sesión" });
   }
 };

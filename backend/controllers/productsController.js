@@ -6,7 +6,6 @@ const getProducts = async (req, res) => {
     const products = await Product.find();
     res.json(products);
   } catch (error) {
-    console.error("Error al obtener productos:", error);
     res.status(500).json({ error: "Error al obtener productos" });
   }
 };
@@ -18,7 +17,6 @@ const createProduct = async (req, res) => {
     const productoGuardado = await nuevoProducto.save();
     res.status(201).json(productoGuardado);
   } catch (error) {
-    console.error("Error al crear producto:", error);
     res.status(400).json({ error: "Error al crear producto" });
   }
 };
@@ -32,7 +30,6 @@ const getProductById = async (req, res) => {
     }
     res.json(producto);
   } catch (error) {
-    console.error("Error al obtener producto:", error);
     res.status(400).json({ error: "Error al obtener producto" });
   }
 };
@@ -52,7 +49,6 @@ const updateProduct = async (req, res) => {
 
     res.json(productoActualizado);
   } catch (error) {
-    console.error("Error al actualizar producto:", error);
     res.status(400).json({ error: "Error al actualizar producto" });
   }
 };
@@ -68,13 +64,12 @@ const deleteProduct = async (req, res) => {
 
     res.json({ mensaje: "Producto eliminado correctamente" });
   } catch (error) {
-    console.error("Error al eliminar producto:", error);
     res.status(400).json({ error: "Error al eliminar producto" });
   }
 };
 
 
-// Consulta de productos () “Se añadió un endpoint de filtrado /products/filter que recibe parámetros por query string (q, minPrice, maxPrice, minStock) y usa operadores MongoDB $regex, $gte, $lte para obtener productos específicos.”
+// *@ Consulta de productos () “Se añadió un endpoint de filtrado /products/filter que recibe parámetros por query string (q, minPrice, maxPrice, minStock) y usa operadores MongoDB $regex, $gte, $lte para obtener productos específicos.”
 
 const filterProducts = async (req, res) => {
   try {
@@ -99,7 +94,6 @@ const filterProducts = async (req, res) => {
     const products = await Product.find(filter);
     res.json(products);
   } catch (error) {
-    console.error("Error al filtrar productos:", error);
     res.status(500).json({ message: "Error al filtrar productos" });
   }
 };
