@@ -1,3 +1,5 @@
+// Hook personalizado para manejar errores de forma reutilizable
+
 import { useState } from "react";
 
 export const useError = (initialValue) => {
@@ -9,3 +11,7 @@ export const useError = (initialValue) => {
     clear: () => setValue(initialValue),
   };
 };
+
+// Guarda un valor y ofrece:
+// set: para establecer el error
+// clear: para volver al valor inicial (reset)

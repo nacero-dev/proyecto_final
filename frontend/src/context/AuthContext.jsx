@@ -27,13 +27,19 @@ useEffect(() => {
     setIsAdmin(savedIsAdmin);
   }, []);
 
+//funcion login
 
     const login = (data) => {
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("isAdmin", String(data.isAdmin));
-    setToken(data.token);
-    setIsAdmin(Boolean(data.isAdmin));
+    localStorage.setItem("token", data.token); // se ponen los datos en local storage para que permanezcan ante actualizaciones o cierre de pestañas en el navegador
+    localStorage.setItem("isAdmin", String(data.isAdmin)); //modifica el tipo de datos del local storage puesto que esta guardado como texto y se necesita guardar en string en React
+    setToken(data.token); //para que la interfaz se actualice al instante sin recargar (
+    setIsAdmin(Boolean(data.isAdmin)); //modifica el tipo de datos del local storage puesto que esta guardado como boolean y se necesita guardar en string en React
   };
+
+ //funcion logout
+
+ //elimina los datos de sesión
+ //limpia el estado para ocultar rutas/acciones protegidas
 
     const logout = () => {
     localStorage.removeItem("token");
@@ -44,13 +50,7 @@ useEffect(() => {
 
   const isAuthenticated = Boolean(token);
 
-  const value = {
-    token,
-    isAdmin,
-    isAuthenticated,
-    login,
-    logout,
-  };
+  const value = { token, isAdmin, isAuthenticated, login, logout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

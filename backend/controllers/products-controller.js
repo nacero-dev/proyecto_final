@@ -109,4 +109,4 @@ const filterProducts = async (req, res) => {
 };
 
 
-module.exports = { getProducts, createProduct, getProductById, updateProduct, deleteProduct, filterProducts, };
+module.exports = { getProducts, createProduct, getProductById, updateProduct, deleteProduct, filterProducts };
