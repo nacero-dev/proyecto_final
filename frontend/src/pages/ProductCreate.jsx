@@ -153,45 +153,21 @@ const ProductCreate = () => {
 
             {/* Fila de Nombre */}
             <label className="form-label">Nombre</label>
-            <input
-              type="text"
-              className="form-control"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              placeholder="Ej: Lamborghini Huracán 2018"
-            />
+            <input type="text" className="form-control" name="name" value={form.name} onChange={handleChange} required placeholder="Ej: Lamborghini Huracán 2018"/>
           </div>
 
           {/* Fila de precio y stock */}
           <div className="row">
             <div className="col-md-6 mb-3">
               <label className="form-label">Precio (€)</label>
-              <input
-                type="number"
-                className="form-control"
-                name="price"
-                value={form.price}
-                onChange={handleChange}
-                required
-                min="0"
-              />
+              <input type="number" className="form-control" name="price" value={form.price} onChange={handleChange} required min="0"/>
             </div>
 
 
             {/* Fila de Unidades */}
             <div className="col-md-6 mb-3">
               <label className="form-label">Stock (unidades)</label>
-              <input
-                type="number"
-                className="form-control"
-                name="stock"
-                value={form.stock}
-                onChange={handleChange}
-                required
-                min="0"
-              />
+              <input type="number" className="form-control" name="stock" value={form.stock} onChange={handleChange} required min="0"/>
             </div>
           </div>
 
@@ -199,69 +175,41 @@ const ProductCreate = () => {
           <div className="row">
             <div className="col-md-6 mb-3">
               <label className="form-label">Kilometraje (km)</label>
-              <input
-                type="number"
-                className="form-control"
-                name="mileage"
-                value={form.mileage}
-                onChange={handleChange}
-                min="0"
-                placeholder="Ej: 32500"
-              />
+              <input type="number" className="form-control" name="mileage" value={form.mileage} onChange={handleChange} min="0" placeholder="Ej: 32500"/>
             </div>
 
             <div className="col-md-6 mb-3">
               <label className="form-label">Última ITV</label>
-              <input
-                type="date"
-                className="form-control"
-                name="itvDate"
-                value={form.itvDate}
-                onChange={handleChange}
-              />
+              <input type="date" className="form-control" name="itvDate" value={form.itvDate} onChange={handleChange}/>
             </div>
           </div>
 
           {/* Fila de Último servicio */}
           <div className="mb-3">
             <label className="form-label">Último servicio</label>
-            <input
-              type="date"
-              className="form-control"
-              name="lastServiceDate"
-              value={form.lastServiceDate}
-              onChange={handleChange}
-            />
+            <input type="date" className="form-control" name="lastServiceDate" value={form.lastServiceDate} onChange={handleChange}/>
           </div>
 
           {/* Fila de Descripcion */}
           <div className="mb-3">
             <label className="form-label">Descripción</label>
-            <input
-              type="text"
-              className="form-control"
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Ej: Gasolina · Automático · 610 CV · Negro"
-            />
+            <input type="text" className="form-control" name="description" value={form.description} onChange={handleChange} placeholder="Ej: Gasolina · Automático · 610 CV · Negro"/>
           </div>
 
           {/* Selector de imagen predefinida */}
           <div className="mb-3">
             <label className="form-label">Imagen</label>
-            <select
-              className="form-select"
-              name="imageUrl"
-              value={form.imageUrl}
-              onChange={handleChange}
-            >
+            
+            <select className="form-select" name="imageUrl" value={form.imageUrl} onChange={handleChange}>
+              
               <option value="">Sin imagen</option>
+
               {VEHICLE_IMAGES.map((img) => (
                 <option key={img.value} value={img.value}>
                   {img.label}
                 </option>
               ))}
+
             </select>
 
             {/* 
@@ -282,9 +230,7 @@ const ProductCreate = () => {
 
             {form.imageUrl && (
               <div className="mt-3">
-                <img
-                  src={form.imageUrl} 
-                  alt="Vista previa"
+                <img src={form.imageUrl} alt="Vista previa"
                   style={{
                     width: "100%",
                     maxHeight: "220px",
