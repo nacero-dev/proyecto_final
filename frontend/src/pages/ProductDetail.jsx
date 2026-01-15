@@ -2,6 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { API_URL } from "@/const/api";
 
+// Función auxiliar para formatear fechas en la UI
+
+// Función para formatear fechas en la tabla (explicacion en Productslist "replica")
 const formatDate = (value) => {
   if (!value) return "-";
   const date = new Date(value);
@@ -9,18 +12,24 @@ const formatDate = (value) => {
   return date.toLocaleDateString("es-ES");
 };
 
+// Vista de detalle de un vehículo "card" por ID
+
+// Si el usuario es admin, permite editar y eliminar
 const ProductDetail = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id } = useParams(); // id viene de la /products/:id
+  const navigate = useNavigate();  // Hook de navegación para volver al inventario o ir a editar
 
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState("");
+  const [product, setProduct] = useState(null); // Estado del vehículo cargado desde el backend
+  const [loading, setLoading] = useState(true); // Estado para mostrar spinner mientras se carga
+  const [error, setError] = useState(null);   // Estado para errores
+  const [message, setMessage] = useState(""); // Mensajes informativos para el usuario
 
+  // Token y rol guardados en localStorage al iniciar sesión
   const token = localStorage.getItem("token");
   const isAdmin = localStorage.getItem("isAdmin") === "true";
 
+
+  // Al entrar a la vista, se consulta el detalle del vehículo por ID
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -28,32 +37,40 @@ const ProductDetail = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
+         // Manejo de errores HTTP para dar mensajes más claros
         if (!response.ok) {
-          if (response.status === 404) throw new Error("Vehiculo no encontrado");
-          if (response.status === 401) throw new Error("No autorizado");
-          throw new Error("Error al obtener el Vehiculo");
+          if (response.status === 404) throw new Error("Vehiculo no encontrado"); // en caso de respuesta 404 se muestra vehiculo no encontrado
+          if (response.status === 401) throw new Error("No autorizado"); // en caso de respuesta no encontrar vehiculo por id
+          throw new Error("Error al obtener el Vehiculo"); // en caso de no ser errores 404 / 401
         }
 
+        // La respuesta llega en JSON y se convierte a objeto con response.json()
         const data = await response.json();
+
+        // Se guarda el vehículo en el estado para poder renderizarlo
         setProduct(data);
+
       } catch (err) {
-        setError(err.message);
+        setError(err.message); // Si falla, se guarda el mensaje para mostrarlo en pantalla
       } finally {
-        setLoading(false);
+        setLoading(false);  // Siempre se apaga el loading al final
       }
     };
 
     fetchProduct();
   }, [id, token]);
 
-  const handleDelete = async () => {
-    setMessage("");
 
+
+  //Elimina el vehículo actual
+  const handleDelete = async () => {
+    setMessage(""); // Limpia mensajes previos
+
+    // si no es admin impide realizar el DELETE
     if (!isAdmin) {
-      setMessage("No tienes permisos para eliminar vehículos");
+      setMessage("No tienes permisos para eliminar vehículos"); //en caso de que user no admin emitir mensaje de no autorizacion
       return;
     }
-
 
     try {
       const response = await fetch(`${API_URL}/products/${id}`, {
@@ -61,14 +78,18 @@ const ProductDetail = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      // Si falla, se lanza error para entrar al catch
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
+
+      // Si elimina correctamente, se regresa al inventario
       navigate("/products");
     } catch (err) {
-      setMessage("No se pudo eliminar el vehículo.");
+      setMessage("No se pudo eliminar el vehículo."); // Mensaje de informacion de error para el usuario
     }
   };
 
+  // Mientras loading es true se renderiza spinner
   if (loading) {
     return (
       <div className="container mt-5 text-center">
@@ -79,6 +100,7 @@ const ProductDetail = () => {
     );
   }
 
+  // caso Si se genera un error se muestra una alerta dependiendo del status error
   if (error) {
     return (
       <div className="container mt-4">
@@ -87,6 +109,7 @@ const ProductDetail = () => {
     );
   }
 
+  // caso si no hay vehiculo cargados
   if (!product) {
     return (
       <div className="container mt-4">
@@ -95,15 +118,23 @@ const ProductDetail = () => {
     );
   }
 
+  // Si product.stock tiene un valor numerico usa ese valor, si el stock viene con null, vacio, o undefined usa 0 y lo convierte a numero para poder comparar (stock > 0)
   const stock = Number(product.stock || 0);
 
   return (
+
     <div className="container mt-4">
+
+      {/* Mensajes informativos en cuanto a los vehiculos de la tabla */}
       {message && <div className="alert alert-info">{message}</div>}
 
       <h2 className="mb-4 text-center">Detalle del vehículo</h2>
 
+
+      {/* Card centrada para presentar la información del vehículo */}
       <div className="card shadow-sm mx-auto" style={{ maxWidth: "700px" }}>
+
+        {/* Si hay imageUrl, se muestra como cabecera de la card */}
         {product.imageUrl && (
           <img
             src={product.imageUrl}
@@ -116,6 +147,8 @@ const ProductDetail = () => {
         <div className="card-body">
           <h5 className="card-title mb-3">{product.name}</h5>
 
+          {/* Se organiza la información en filas y columnas con Bootstrap */}
+
           <div className="row">
             <div className="col-md-6 mb-2">
               <strong>Precio:</strong> {Number(product.price || 0).toFixed(2)} €
@@ -127,6 +160,8 @@ const ProductDetail = () => {
 
             <div className="col-md-6 mb-2">
               <strong>Estado:</strong>{" "}
+
+              {/* Estado calculado a partir del stock */}
               {stock > 0 ? (
                 <span className="badge bg-success ms-2">Disponible</span>
               ) : (
@@ -139,6 +174,8 @@ const ProductDetail = () => {
               {Number(product.mileage || 0).toLocaleString("es-ES")} km
             </div>
 
+            {/* Se utiliza formatDate como se configura arriva para ITV y Ulitmo servicio para la visualizacion en detalle */}
+
             <div className="col-md-6 mb-2">
               <strong>Última ITV:</strong> {formatDate(product.itvDate)}
             </div>
@@ -150,10 +187,12 @@ const ProductDetail = () => {
 
           <hr />
 
+          {/* Descripcion del vehículo */}    
           <p className="card-text">
             <strong>Descripción:</strong> {product.description || "Sin descripción"}
           </p>
 
+          {/* Botones de navegacion de acciones al final de la tabla */}
           <div className="d-flex gap-2 mt-3">
             <button
               type="button"
@@ -162,7 +201,8 @@ const ProductDetail = () => {
             >
               Volver al inventario
             </button>
-
+            
+            {/* Acciones del administrador de edición y eliminción */}
             {isAdmin && (
               <>
                 <button
@@ -183,6 +223,8 @@ const ProductDetail = () => {
               </>
             )}
           </div>
+
+          {/* ID para referencia en MongoDB "mismo de la URL" */}
 
           <p className="text-muted mb-0 mt-3">
             <small>ID: {product._id}</small>

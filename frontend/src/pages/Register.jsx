@@ -1,43 +1,64 @@
+// Página de registro
+// Crea un usuario nuevo (visor) llamando al backend
+// Luego muestra un mensaje para que el usuario inicie sesión
+
 import { useState } from "react";
 import { API_URL } from "@/const/api";
 
 const Register = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" }); // Estads del formulario
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+
+  // Manejador de cambios del formulario (email/password), pone los vlores en el set del formulario
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Manejador del submit que envía el registro al backend, el body viaja como texto en formato JSON (JSON.stringify) y el backend lo interpreta con express.json()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Se limpian mensajes 
     setError("");
     setSuccess("");
 
     try {
+      
       const response = await fetch(`${API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+        body: JSON.stringify(form), 
+      }); 
+      // se hace peticion POST a /api/register para crea un usuario (visor por defecto)
+      // // El body se envía como texto en formato JSON usando JSON.stringify(form)
 
+
+      // La respuesta del backend llega en JSON y se convierte a objeto con response.json(), desplegando mensajes que ya estan configurados segun el caso en los controllers
       const data = await response.json();
 
+      // Si la respuesta no es OK, da mensaje que venga del backend (de la seccion register "registerUser" o lance un mensaje que hubo error de registro
       if (!response.ok) {
         throw new Error(data.message || "Error al registrar usuario");
       }
 
-      setSuccess("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
+      // Si todo salió bien, mostraremos feedback positivo y se hace limpieza del formulario setForm("")
+      setSuccess("Usuario registrado correctamente. Ahora puedes iniciar sesión");
       setForm({ email: "", password: "" });
     } catch (err) {
+      //mensaje de error de registro
       setError(err.message);
     }
   };
 
   return (
+
+
+    // Contenedor de pantalla completa, configuración bastante similar en diseño que el Login (se explica en login el detalle)
+
     <div className="min-vh-100 d-flex w-100 overflow-hidden">
-      {/* Columna izquierda (solo desktop) */}
       <div style={{ width: "60vw" }} className="d-none d-lg-flex flex-column">
         <div style={{ height: "50vh", overflow: "hidden" }}>
           <img
@@ -59,7 +80,6 @@ const Register = () => {
         </div>
       </div>
 
-      {/* Columna derecha */}
       <div className="flex-grow-1 d-flex align-items-center justify-content-center p-4">
         <div style={{ width: "100%", maxWidth: "420px" }}>
           <h2 className="text-center mb-4">Registro de nuevo usuario</h2>
@@ -70,26 +90,11 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="mx-auto">
             <div className="mb-3">
               <label className="form-label">Correo electrónico</label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
+              <input type="email" name="email" value={form.email} onChange={handleChange} className="form-control" required/>
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Contraseña</label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
+              <label className="form-label">Contraseña</label> <input type="password" name="password" value={form.password} onChange={handleChange} className="form-control" required/>
             </div>
 
             <button type="submit" className="btn btn-success w-100">
