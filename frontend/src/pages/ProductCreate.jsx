@@ -5,8 +5,8 @@ import { VEHICLE_IMAGES } from "@/const/vehicle-images";
 
 
 // Hooks personalizados
-import { useLoading } from "@/hooks/useLoading"; /*@*/
-import { useMessage } from "@/hooks/useMessage" /*@*/
+import { useLoading } from "@/hooks/useLoading";
+import { useMessage } from "@/hooks/useMessage";
 
 // Función para formatear fechas de inputs al crear vehiculos en los apartados itv y ultima fecha de servicio 
 
@@ -50,12 +50,12 @@ const ProductCreate = () => {
   });
 
   // loading se usa para mostrar spinner mientras se carga el vehículo en modo edición
-  // const [loading, setLoading] = useState(false); /*@*/
-  const loading = useLoading(false); /*@*/
+
+  const loading = useLoading(false);
 
   // message se usa para mostrar errores o avisos en pantalla
-  // const [message, setMessage] = useState(""); /*@*/
-   const message = useMessage(""); /*@*/
+
+   const message = useMessage(""); 
 
   // Si existe id, significa que estamos editando:
 
@@ -66,10 +66,10 @@ const ProductCreate = () => {
 
       try {
 
-        message.clear(); /*@*/
-        loading.set(true); /*@*/
+        message.clear();
+        loading.set(true);
 
-        // setLoading(true); /*@*/
+        // setLoading(true);
         const response = await fetch(`${API_URL}/products/${id}`, { 
           headers: { Authorization: `Bearer ${token}` },
         });   // se hace un GET para traer datos en el formulario
@@ -95,12 +95,10 @@ const ProductCreate = () => {
 
         
       } catch (error) {
-        // setMessage("Error al cargar el vehiculo para editar"); /*@*/
-        message.set("Error al cargar el vehículo para editar"); /*@*/
+        message.set("Error al cargar el vehículo para editar");
 
       } finally {
-        // setLoading(false); /*@*/
-        loading.set(false); /*@*/
+        loading.set(false);
       }
     };
     fetchProduct();
@@ -114,8 +112,7 @@ const ProductCreate = () => {
   // Usa el atributo name del input para actualizar el campo correcto
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setMessage(""); /*@*/
-    message.clear(); /*@*/
+    message.clear();
 
 
     const url = id ? `${API_URL}/products/${id}` : `${API_URL}/products`; // Decide ruta y método según si hay id o no
@@ -142,8 +139,7 @@ const ProductCreate = () => {
       // Si todo salió bien, se vuelve al inventario
       navigate("/products");
     } catch (error) {
-      // setMessage(error.message || "Error al guardar el Vehiculo"); /*@*/// Mensaje para el usuario 
-      message.set(err.message || "Error al guardar el vehículo"); /*@*/
+      message.set(err.message || "Error al guardar el vehículo");
     }
   };
 

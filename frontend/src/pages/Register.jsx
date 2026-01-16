@@ -11,9 +11,7 @@ import { useLoading } from "@/hooks/useLoading";
 
 
 const Register = () => {
-  const [form, setForm] = useState({ email: "", password: "" }); // Estads del formulario/*@*/
-  // const [error, setError] = useState("");/*@*/
-  // const [success, setSuccess] = useState(""); /*@*/
+  const [form, setForm] = useState({ email: "", password: "" }); // Estads del formulario/
 
   const error = useError("");
   const success = useMessage("");
@@ -31,8 +29,7 @@ const Register = () => {
     e.preventDefault();
 
     // Se limpian mensajes 
-    // setError("");/*@*/
-    // setSuccess("");/*@*/
+
     error.clear();
     success.clear();
     loading.set(true);
@@ -57,21 +54,19 @@ const Register = () => {
       }
 
       // Si todo salió bien, mostraremos feedback positivo y se hace limpieza del formulario setForm("")
-      // setSuccess("Usuario registrado correctamente. Ahora puedes iniciar sesión");/*@*/
-      success.set("Usuario registrado correctamente. Ahora puedes iniciar sesión"); /*@*/
+
+      success.set("Usuario registrado correctamente. Ahora puedes iniciar sesión");
       setForm({ email: "", password: "" });
     } catch (err) {
       //mensaje de error de registro
-      // setError(err.message); /*@*/
-      error.set(err.message);/*@*/
-      } finally {/*@*/
-      loading.set(false);/*@*/
+      error.set(err.message);
+      } finally {
+      loading.set(false);
     }
   };
 
   return (
 
-  //*@* .value //
     // Contenedor de pantalla completa, configuración bastante similar en diseño que el Login (se explica en login el detalle)
 
     <div className="min-vh-100 d-flex w-100 overflow-hidden">

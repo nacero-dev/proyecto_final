@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { API_URL } from "@/const/api";
 
-// Hooks personalizados *@*
+// Hooks personalizados
 import { useError } from "@/hooks/useError";
 import { useLoading } from "@/hooks/useLoading";
 import { useMessage } from "@/hooks/useMessage";
@@ -26,13 +26,9 @@ const ProductDetail = () => {
 
   const [product, setProduct] = useState(null); // Estado del vehículo cargado desde el backend
  
-  const loading = useLoading(true); /*@*/
-  const error = useError(null); /*@*/
-  const message = useMessage(""); /*@*/
-
-  // const [loading, setLoading] = useState(true); /*@*/// Estado para mostrar spinner mientras se carga
-  // const [error, setError] = useState(null);  /*@*/// Estado para errores
-  // const [message, setMessage] = useState(""); /*@*/// Mensajes informativos para el usuario
+  const loading = useLoading(true); 
+  const error = useError(null); 
+  const message = useMessage("");
 
   // Token y rol guardados en localStorage al iniciar sesión
   const token = localStorage.getItem("token");
@@ -43,8 +39,8 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        error.clear(); /*@*/
-        loading.set(true); /*@*/
+        error.clear();
+        loading.set(true);
 
         const response = await fetch(`${API_URL}/products/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -64,11 +60,10 @@ const ProductDetail = () => {
         setProduct(data);
 
       } catch (err) {
-        // setError(err.message); //*@*/// Si falla, se guarda el mensaje para mostrarlo en pantalla
-        error.set(err.message); /*@*/
+        error.set(err.message);
       } finally {
-        loading.set(false);
-        //setLoading(false); //*@*/// // Siempre se apaga el loading al final
+        loading.set(false); 
+
       }
     };
 
@@ -84,8 +79,8 @@ const ProductDetail = () => {
 
     // si no es admin impide realizar el DELETE
     if (!isAdmin) {
-      // setMessage("No tienes permisos para eliminar vehículos"); /*@*///en caso de que user no admin emitir mensaje de no autorizacion
-      message.set("No tienes permisos para eliminar vehículos"); /*@*/
+      // setMessage("No tienes permisos para eliminar vehículos");
+      message.set("No tienes permisos para eliminar vehículos");
       return;
     }
 
@@ -102,14 +97,14 @@ const ProductDetail = () => {
       // Si elimina correctamente, se regresa al inventario
       navigate("/products");
     } catch (err) {
-      // setMessage("No se pudo eliminar el vehículo."); /*@*/// Mensaje de informacion de error para el usuario
-      message.set("No se pudo eliminar el vehículo."); /*@*/
+
+      message.set("No se pudo eliminar el vehículo.");
     }
   };
 
   // Mientras loading es true se renderiza spinner
-  // if (loading) {  /*@*/
-  if (loading.value) {   /*@*/
+
+  if (loading.value) {  
     return (
       <div className="container mt-5 text-center">
         <div className="spinner-border text-primary" role="status">
@@ -120,11 +115,10 @@ const ProductDetail = () => {
   }
 
   // caso Si se genera un error se muestra una alerta dependiendo del status error
-  // if (error) { /*@*/
-  if (error.value) { /*@*/
+
+  if (error.value) { 
     return (
       <div className="container mt-4">
-        {/* <div className="alert alert-danger">{error}</div> */}
         <div className="alert alert-danger">{error.value}</div> 
       </div>
     );

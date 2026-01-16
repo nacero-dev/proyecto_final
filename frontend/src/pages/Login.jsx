@@ -8,9 +8,9 @@ import { API_URL } from "@/const/api";
 
 
 // Hooks personalizados
-import { useError } from "@/hooks/useError"; /*@*/
-import { useLoading } from "@/hooks/useLoading"; /*@*/
-import { useMessage } from "@/hooks/useMessage"; /*@*/
+import { useError } from "@/hooks/useError"; 
+import { useLoading } from "@/hooks/useLoading"; 
+import { useMessage } from "@/hooks/useMessage"; 
 
 const Login = () => {
   const navigate = useNavigate(); // Hook de navegación para redirigir sin recargar la página
@@ -21,19 +21,11 @@ const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
 
 
-  /*@*/
   // Estados reutilizables (en lugar de useState repetidos)
   const error = useError("");        // Mensajes de error
   const success = useMessage("");    // Mensajes de éxito
   const loading = useLoading(false); // Bloquea inputs/botones durante la petición
 
-  // // Estados que dab avisos al usuario
-  // const [error, setError] = useState("");
-  // const [success, setSuccess] = useState("");
-
-  // // loading bloquea inputs botones en lo que se procesa login
-  // const [loading, setLoading] = useState(false);
-/*@*/
 
   // Manejador de cambios del formulario 
   // e.target.name coincide con "email" o "password" según el input
@@ -52,9 +44,9 @@ const Login = () => {
     // setLoading(true);
 
      // Limpieza de mensajes antes de intentar login
-    error.clear();/*@*/
-    success.clear();/*@*/
-    loading.set(true);/*@*/
+    error.clear();
+    success.clear();
+    loading.set(true);
 
     try {
 
@@ -78,24 +70,20 @@ const Login = () => {
       login({ token: data.token, isAdmin: data.isAdmin });
 
       // Mensaje de éxito de inicio y redirección al inventario
-      // setSuccess("Inicio de sesión exitoso");/*@*/
         success.set("Inicio de sesión exitoso");
       setTimeout(() => {
         navigate("/products");
       }, 600); // se hace una pausa de 0.6 segs para UX en donde se pueda ver el mensaje de inicio de sesión
     } catch (err) {
       // Muestra el error de credenciales o de servidor
-      // setError(err.message); /*@*/
-      error.set(err.message); /*@*/
+      error.set(err.message);
     } finally {
       // Se apaga loading siempre (haya éxito o error)
-      // setLoading(false);/*@*/
-      loading.set(false); /*@*/
+      loading.set(false); 
     }
   };
 
 
-  //*@* .value//
   return (
     <div className="min-vh-100 d-flex w-100 overflow-hidden">
       <div style={{ width: "60vw" }} className="d-none d-lg-flex flex-column">{/* Responsive config d-none d-lg-flex: Columna izquierda (solo se muestra en desktop "desde d-none hasta "lg" se muestra") */}

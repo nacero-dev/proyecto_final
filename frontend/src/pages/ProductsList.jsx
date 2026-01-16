@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { API_URL } from "@/const/api";
 
 // Hooks personalizados
-import { useError } from "@/hooks/useError"; /*@*/
-import { useLoading } from "@/hooks/useLoading"; /*@*/
-import { useMessage } from "@/hooks/useMessage"; /*@*/
+import { useError } from "@/hooks/useError";
+import { useLoading } from "@/hooks/useLoading"; 
+import { useMessage } from "@/hooks/useMessage";
 
 // Función para formatear fechas en la tabla que sirve para leer una fecha por un usuario
 
@@ -21,24 +21,21 @@ const formatDate = (value) => {
 const ProductsList = () => {
 
  // Estados reutilizables
-  const error = useError(null);  /*@*/// Estado de error para mostrar alertas si falla una petición
-  const loading = useLoading(true);  /*@*/// Estado que informa la carga mostrando spinner mientras se consulta el inventario
-  const message = useMessage("");  /*@*/// Mensajes informativos en pantalla para experiencia de usuario
+  const error = useError(null);  
+  const loading = useLoading(true);  
+  const message = useMessage(""); 
 
 
   const [products, setProducts] = useState([]);  // Estado con la lista de vehículos recibida del backend
-  // const [error, setError] = useState(null);   /*@*/// Estado de error para mostrar alertas si falla una petición
-  // const [loading, setLoading] = useState(true);  /*@*/// Estado que informa la carga mostrando spinner mientras se consulta el inventario
-  // const [message, setMessage] = useState(""); /*@*/// Mensajes informativos en pantalla para experiencia de usuario
   const token = localStorage.getItem("token");  // Token JWT guardado en localStorage al hacer login (se usa para Authorization)
   const isAdmin = localStorage.getItem("isAdmin") === "true"; //Rol guardado en localStorage como string ("true"/"false"), se convierte a dato boolean
 
-  /*@*/
+
   // Helper para mostrar mensajes temporales (evita repetir setTimeout en muchos lugares)
   const showMessage = (text, ms = 3000) => {
     message.set(text);
     setTimeout(() => message.clear(), ms);
-  };/*@*/
+  };
 
 
   // Función que consulta el inventario al backend
@@ -46,8 +43,8 @@ const ProductsList = () => {
   const fetchProducts = async () => {
     try {
 
-      error.clear(); /*@*/
-      loading.set(true); /*@*/
+      error.clear(); 
+      loading.set(true); 
 
       const response = await fetch(`${API_URL}/products`, {
         headers: {
@@ -69,11 +66,9 @@ const ProductsList = () => {
       const data = await response.json();
       setProducts(data); // Se guarda la lista en el estado para renderizar la tabla
     } catch (err) {
-      // setError(err.message || "No se pudieron cargar los Vehículos"); /*@*/// sale un error ya especificado en controllers o definido si no esta especificado si ocurre un error 
-      error.set(err.message || "No se pudieron cargar los Vehículos");/*@*///sale un error ya especificado en controllers o definido si no esta especificado si ocurre un error 
+      error.set(err.message || "No se pudieron cargar los Vehículos");
     } finally {
-      // setLoading(false); /*@*///desactiviación de loading que estaba true inicialmente al obtener un estado resultante
-       loading.set(false);/*@*/
+       loading.set(false);
     }
   };
 
@@ -91,7 +86,7 @@ const ProductsList = () => {
       message.clear();
 
       if (!isAdmin) {
-        setMessage("No tienes permisos para eliminar Vehículos"); // Solo admin tiene la facultadde eliminar ademas el backend vuelve a validar permisos
+        showMessage("No tienes permisos para eliminar Vehículos"); // Solo admin tiene la facultadde eliminar ademas el backend vuelve a validar permisos
         return;
       }
 
@@ -104,16 +99,13 @@ const ProductsList = () => {
 
       // Si se aplica DELETE correctamente, se actualiza el estado local
       setProducts(products.filter((product) => product._id !== id)); // se saca del inventario el vehículo borrado 
-      // setMessage("Vehículo eliminado correctamente");
       showMessage("Vehículo eliminado correctamente");
     } catch (err) {
-      // setError("No se pudo eliminar el Vehículo"); /*@*/
-      error.set("No se pudo eliminar el Vehículo");  /*@*/
+      error.set("No se pudo eliminar el Vehículo");
     }
   };
 
-  // if (loading) { /*@*/
-  if (loading.value) { /*@*/
+  if (loading.value) { 
     return (
       <div className="container mt-5 text-center">
         <div className="spinner-border text-primary" role="status">
@@ -125,8 +117,6 @@ const ProductsList = () => {
 
   //DETALLE DE INVENTARIO DE VEHICULOS EN TABLA
 
-
-  //error.value *@
   return (
     <div className="container-fluid mt-4 px-4">
 
