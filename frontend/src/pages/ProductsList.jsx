@@ -3,14 +3,14 @@ import { API_URL } from "@/const/api";
 
 // Hooks personalizados
 import { useError } from "@/hooks/useError";
-import { useLoading } from "@/hooks/useLoading"; 
+import { useLoading } from "@/hooks/useLoading";
 import { useMessage } from "@/hooks/useMessage";
 
 // Función para formatear fechas en la tabla que sirve para leer una fecha por un usuario
 
 const formatDate = (value) => {
   if (!value) return "-"; // si no hay fecha o hay algun dato invalido retorna "-"
-  const date = new Date(value); 
+  const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "-"; // si no hay fecha o hay algun dato invalido retorna "-"
   return date.toLocaleDateString("es-ES"); // si es valido retorna fecha en formato dd/mm/aaaa "-"
 };
@@ -20,15 +20,15 @@ const formatDate = (value) => {
 //Muestra el inventario de vehículos y permite acciones según el rol
 const ProductsList = () => {
 
- // Estados reutilizables
-  const error = useError(null);  
-  const loading = useLoading(true);  
-  const message = useMessage(""); 
-
+  // Estados reutilizables
+  const error = useError(null);
+  const loading = useLoading(true);
+  const message = useMessage("");
 
   const [products, setProducts] = useState([]);  // Estado con la lista de vehículos recibida del backend
   const token = localStorage.getItem("token");  // Token JWT guardado en localStorage al hacer login (se usa para Authorization)
   const isAdmin = localStorage.getItem("isAdmin") === "true"; //Rol guardado en localStorage como string ("true"/"false"), se convierte a dato boolean
+
 
 
   // Helper para mostrar mensajes temporales (evita repetir setTimeout en muchos lugares)
@@ -43,8 +43,8 @@ const ProductsList = () => {
   const fetchProducts = async () => {
     try {
 
-      error.clear(); 
-      loading.set(true); 
+      error.clear();
+      loading.set(true);
 
       const response = await fetch(`${API_URL}/products`, {
         headers: {
@@ -57,9 +57,9 @@ const ProductsList = () => {
         if (response.status === 401) throw new Error("No autorizado: inicia sesión");
         throw new Error(`Error HTTP: ${response.status}`);
       }
-       /// response.ok, es boolean que trae fetch, vale true cuando todo se ejecuta sin problema false cuando hay un error 
-       // 401 cuando algo falla con el token, (ej. cuando caduca el tpoken) 
-       // el segundo throw es si hay otro tipo de error no 401
+      /// response.ok, es boolean que trae fetch, vale true cuando todo se ejecuta sin problema false cuando hay un error 
+      // 401 cuando algo falla con el token, (ej. cuando caduca el tpoken) 
+      // el segundo throw es si hay otro tipo de error no 401
 
 
       // La respuesta llega como JSON y se convierte a objeto con response.json()
@@ -68,7 +68,7 @@ const ProductsList = () => {
     } catch (err) {
       error.set(err.message || "No se pudieron cargar los Vehículos");
     } finally {
-       loading.set(false);
+      loading.set(false);
     }
   };
 
@@ -79,7 +79,7 @@ const ProductsList = () => {
 
 
   // Elimina un vehículo por ID
-  
+
   const handleDelete = async (id) => {
     try {
       error.clear();
@@ -105,7 +105,7 @@ const ProductsList = () => {
     }
   };
 
-  if (loading.value) { 
+  if (loading.value) {
     return (
       <div className="container mt-5 text-center">
         <div className="spinner-border text-primary" role="status">
@@ -121,10 +121,11 @@ const ProductsList = () => {
     <div className="container-fluid mt-4 px-4">
 
       {/* Alertas de estado */}
-      {error.value && <div className="alert alert-danger">{error.value}</div>} 
+      {error.value && <div className="alert alert-danger">{error.value}</div>}
       {message.value && <div className="alert alert-info">{message.value}</div>}
 
-      <h2 className="mb-4 text-center">Inventario de Vehículos</h2>
+      <h2 className="mb-4 fw-bold fs-1 text-center">SuperAutos</h2>
+      <h2 className="mb-4 text-center">Inventario de Vehiculos</h2>
 
       {/* Botón de alta de vehiculo solo visible para admin */}
       {isAdmin && (
@@ -180,19 +181,19 @@ const ProductsList = () => {
                   </td>
 
                   {/* Estructura de Datos de la tabla de inventario */}
-                  
+
                   {/* Nombre */}
                   <td>
                     <strong>{product.name}</strong>
                   </td>
-                  
-                   {/* Precio formateado a 2 decimales */}
+
+                  {/* Precio formateado a 2 decimales */}
                   <td>{Number(product.price || 0).toFixed(2)} €</td>
 
                   {/* Vehiculos en inventario del mismo modelo */}
                   <td>{Number(product.stock || 0)}</td>
-                  
-                   {/* Estado calculado desde inventario se hace un badge de Bootstrap https://getbootstrap.com/docs/5.3/components/badge/*/} 
+
+                  {/* Estado calculado desde inventario se hace un badge de Bootstrap https://getbootstrap.com/docs/5.3/components/badge/*/}
                   <td>
                     {Number(product.stock || 0) > 0 ? (
                       <span className="badge bg-success">Disponible</span>
@@ -201,7 +202,7 @@ const ProductsList = () => {
                     )}
                   </td>
 
-                  {/* Fecha ITV con formato especifico */} 
+                  {/* Fecha ITV con formato especifico */}
                   <td>{formatDate(product.itvDate)}</td>
 
                   {/* Fecha ultimo servicio de mantenimiento con formato espcifoco */}
@@ -215,34 +216,47 @@ const ProductsList = () => {
                     <span className="text-muted">{product.description || "-"}</span>
                   </td>
 
-                  <td className="text-end">
+                  <td className="text-end" style={{ width: "220px" }}>
 
-                    {/* boton de visor (tanto admin como visor pueden verlo) */}
-                    <a
-                      href={`/products/${product._id}`}
-                      className="btn btn-sm btn-outline-primary me-2"
-                    >
-                      Ver
-                    </a>
-                    
-                    {/* botones solo acceso admin "isAdmin*/}  
 
-                    {isAdmin && (
-                      <>
-                        <a
-                          href={`/products/create/${product._id}`}
-                          className="btn btn-sm btn-outline-secondary me-2"
-                        >
-                          Editar
-                        </a>
-                        <button
-                          onClick={() => handleDelete(product._id)}
-                          className="btn btn-sm btn-outline-danger"
-                        >
-                          Eliminar
-                        </button> 
-                      </>
-                    )}
+                    {/* Botones para usuarios visores */}
+
+                    <div className="d-inline-flex flex-wrap gap-2 justify-content-end">
+                      <a
+                        href={`/products/${product._id}`}
+                        className="btn btn-sm btn-outline-primary"
+                      >
+                        Ver
+                      </a>
+
+                      <a
+                        href={`/contact?vehicle=${encodeURIComponent(product.name)}&id=${product._id}`}
+                        className="btn btn-sm btn-outline-success"
+                      >
+                        Contactar
+                      </a>
+
+                      {/* Botones para usuarios administrador */}
+
+                      {isAdmin && (
+                        <>
+                          <a
+                            href={`/products/create/${product._id}`}
+                            className="btn btn-sm btn-outline-secondary"
+                          >
+                            Editar
+                          </a>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(product._id)}
+                            className="btn btn-sm btn-outline-danger"
+                          >
+                            Eliminar
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

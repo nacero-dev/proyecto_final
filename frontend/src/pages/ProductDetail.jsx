@@ -25,9 +25,9 @@ const ProductDetail = () => {
   const navigate = useNavigate();  // Hook de navegación para volver al inventario o ir a editar
 
   const [product, setProduct] = useState(null); // Estado del vehículo cargado desde el backend
- 
-  const loading = useLoading(true); 
-  const error = useError(null); 
+
+  const loading = useLoading(true);
+  const error = useError(null);
   const message = useMessage("");
 
   // Token y rol guardados en localStorage al iniciar sesión
@@ -46,7 +46,7 @@ const ProductDetail = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-         // Manejo de errores HTTP para dar mensajes más claros
+        // Manejo de errores HTTP para dar mensajes más claros
         if (!response.ok) {
           if (response.status === 404) throw new Error("Vehiculo no encontrado"); // en caso de respuesta 404 se muestra vehiculo no encontrado
           if (response.status === 401) throw new Error("No autorizado"); // en caso de respuesta no encontrar vehiculo por id
@@ -62,7 +62,7 @@ const ProductDetail = () => {
       } catch (err) {
         error.set(err.message);
       } finally {
-        loading.set(false); 
+        loading.set(false);
 
       }
     };
@@ -104,7 +104,7 @@ const ProductDetail = () => {
 
   // Mientras loading es true se renderiza spinner
 
-  if (loading.value) {  
+  if (loading.value) {
     return (
       <div className="container mt-5 text-center">
         <div className="spinner-border text-primary" role="status">
@@ -116,10 +116,10 @@ const ProductDetail = () => {
 
   // caso Si se genera un error se muestra una alerta dependiendo del status error
 
-  if (error.value) { 
+  if (error.value) {
     return (
       <div className="container mt-4">
-        <div className="alert alert-danger">{error.value}</div> 
+        <div className="alert alert-danger">{error.value}</div>
       </div>
     );
   }
@@ -202,7 +202,7 @@ const ProductDetail = () => {
 
           <hr />
 
-          {/* Descripcion del vehículo */}    
+          {/* Descripcion del vehículo */}
           <p className="card-text">
             <strong>Descripción:</strong> {product.description || "Sin descripción"}
           </p>
@@ -216,7 +216,14 @@ const ProductDetail = () => {
             >
               Volver al inventario
             </button>
-            
+
+            <a
+              href={`/contact?vehicle=${encodeURIComponent(product.name)}&id=${product._id}`}
+              className="btn btn-outline-success"
+            >
+              Contactar
+            </a>
+
             {/* Acciones del administrador de edición y eliminción */}
             {isAdmin && (
               <>

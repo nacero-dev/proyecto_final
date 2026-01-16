@@ -15,6 +15,7 @@ const ProductCreate = lazy(() => import("@/pages/ProductCreate.jsx"));
 const Login = lazy(() => import("@/pages/Login.jsx"));
 const Register = lazy(() => import("@/pages/Register.jsx"));
 const AdminUsers = lazy(() => import("@/pages/AdminUsers.jsx"));
+const Contact = lazy(() => import("@/pages/Contact.jsx")); /*@*/
 
 // función para verificar autenticación en caso de que exista el token en local storage 
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -73,6 +74,12 @@ export const router = createBrowserRouter([
         path: "/admin/users",
         element: withSuspense(<ProtectedRoute element={<AdminUsers />} />),
       },
+      /*@*/
+      {
+        path: "/contact",
+        element: withSuspense(<ProtectedRoute element={<Contact />} />),
+      },
+      /*@*/
     ],
   },
 ]);
@@ -89,3 +96,4 @@ export const router = createBrowserRouter([
 //   path: "/products/:id" - Detalle de un producto/vehículo por id
 //   path: "/products/create/:id?" - Crear o editar (opcional con id)
 //   path: "/admin/users" - Administración de usuarios
+//   path: "/contact" - Contactar al administrador para interés en vehiculo

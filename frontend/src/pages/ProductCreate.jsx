@@ -228,7 +228,7 @@ const ProductCreate = () => {
             {/* 
               name="imageUrl" indica a handleChange el campo del estado que debe actualizar, como handleChange hace setForm({ ...form, [e.target.name]: e.target.value }); actualiza form.imageUrl
               Esto hace que el <select> sea controlado por React: el valor mostrado depende del estado
-              Si se carga un vehículo y imageUrl ya viene con "/vehicles/ferrari.webp", el select queda seleccionado automáticamente en esa opción https://react.dev/reference/react-dom/components/select?utm_source=chatgpt.com
+              Si se carga un vehículo y imageUrl ya viene con "/vehicles/ferrari.webp", el select queda seleccionado automáticamente en esa opción https://react.dev/reference/react-dom/components/select
               onChange={handleChange} si se selecciona otra opción, se dispara el evento y se actualiza form.imageUrl con el value del <option> https://www.youtube.com/watch?v=u-m0XINQUyY
               Si el usuario elige sin imagen, imageUrl queda en "" no se guarda ruta y se muestra sin imagen <img>
               En VEHICLE_IMAGES se generan las opciones a elegir desde un array 

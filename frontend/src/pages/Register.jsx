@@ -67,67 +67,77 @@ const Register = () => {
 
   return (
 
-    // Contenedor de pantalla completa, configuración bastante similar en diseño que el Login (se explica en login el detalle)
 
-    <div className="min-vh-100 d-flex w-100 overflow-hidden">
-      <div style={{ width: "60vw" }} className="d-none d-lg-flex flex-column">
-        <div style={{ height: "50vh", overflow: "hidden" }}>
-          <img
-            src="/vehicles/hero.webp"
-            alt="SuperAutos"
-            className="w-100 h-100"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
+  // Configuacion replica en login, se explica en login
 
-        <div
-          className="d-flex align-items-center justify-content-center text-white"
-          style={{ backgroundColor: "#0f4c5c", flex: 1 }}
-        >
-          <div className="text-center p-4">
-            <h1 className="display-4 fw-bold mb-0">SuperAutos</h1>
-            <h2 className="display-5 fw-light">Portal de Empresa</h2>
-          </div>
-        </div>
+  <div className="min-vh-100 d-flex flex-column flex-lg-row w-100 overflow-hidden">
+    
+
+    <div
+      className="d-flex flex-column"
+      style={{ width: "100%" }}
+    >
+      <div style={{ height: "35vh", overflow: "hidden" }} className="d-lg-none">
+        <img src="/vehicles/hero.webp" alt="SuperAutos" className="w-100 h-100" style={{ objectFit: "cover" }}/>
       </div>
 
-      <div className="flex-grow-1 d-flex align-items-center justify-content-center p-4">
-        <div style={{ width: "100%", maxWidth: "420px" }}>
-          <h2 className="text-center mb-4">Registro de nuevo usuario</h2>
+      <div style={{ height: "50vh", overflow: "hidden" }} className="d-none d-lg-block">
+        <img src="/vehicles/hero.webp" alt="SuperAutos" className="w-100 h-100" style={{ objectFit: "cover" }}/>
+      </div>
 
-          {error.value && <div className="alert alert-danger">{error.value}</div>}
-          {success.value && <div className="alert alert-success">{success.value}</div>}
-
-          <form onSubmit={handleSubmit} className="mx-auto">
-            <div className="mb-3">
-              <label className="form-label">Correo electrónico</label>
-              <input type="email" name="email" value={form.email} onChange={handleChange} className="form-control" required  disabled={loading.value}  />  
-            </div> 
-
-            <div className="mb-3">
-              <label className="form-label">Contraseña</label> <input type="password" name="password" value={form.password} onChange={handleChange} className="form-control" required  disabled={loading.value} /> 
-            </div>
-
-            {/* <button type="submit" className="btn btn-success w-100">
-              Crear cuenta
-            </button> */}
-            
-            {/* @ */}
-            <button type="submit" className="btn btn-success w-100" disabled={loading.value}>
-              {loading.value ? "Creando..." : "Crear cuenta"}
-            </button>
-
-            <p className="text-center mt-3">
-              ¿Ya tienes una cuenta?{" "}
-              <a href="/login" className="text-primary">
-                Inicia sesión
-              </a>
-            </p>
-          </form>
+      <div
+        className="d-flex align-items-center justify-content-center text-white"
+        style={{ backgroundColor: "#0f4c5c", flex: 1 }}
+      >
+        <div className="text-center p-4">
+          <h1 className="display-4 fw-bold mb-0">SuperAutos</h1>
+          <h2 className="display-5 fw-light">
+            "Los mejores vehículos exóticos, excelente precio y alta calidad"
+          </h2>
         </div>
       </div>
     </div>
-  );
+
+    <div className="flex-grow-1 d-flex align-items-center justify-content-center p-4">
+      <div style={{ width: "100%", maxWidth: "420px" }}>
+        <h2 className="text-center mb-4">Registro de nuevo usuario</h2>
+
+        {error.value && <div className="alert alert-danger">{error.value}</div>}
+        {success.value && <div className="alert alert-success">{success.value}</div>}
+
+        <form onSubmit={handleSubmit} className="mx-auto">
+          <div className="mb-3">
+            <label className="form-label">Correo electrónico</label>
+            <input type="email" name="email" value={form.email} onChange={handleChange} className="form-control" required disabled={loading.value}/>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Contraseña</label>
+            <input type="password" name="password" value={form.password} onChange={handleChange} className="form-control" required disabled={loading.value}/>
+          </div>
+
+          <button type="submit" className="btn btn-success w-100">
+            Crear cuenta
+          </button>
+
+          <p className="text-center mt-3">
+            ¿Ya tienes una cuenta?{" "}
+            <a href="/login" className="text-primary">
+              Inicia sesión
+            </a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <style>{`
+      @media (min-width: 992px) {
+        .min-vh-100 > div:first-child { width: 60vw !important; }
+      }
+    `}</style>
+  </div>
+);
+
 };
 
 export default Register;
