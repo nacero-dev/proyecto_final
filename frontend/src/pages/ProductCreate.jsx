@@ -3,6 +3,11 @@ import { useState, useEffect } from "react";
 import { API_URL } from "@/const/api";
 import { VEHICLE_IMAGES } from "@/const/vehicle-images";
 
+
+// Hooks personalizados
+import { useLoading } from "@/hooks/useLoading"; /*@*/
+import { useMessage } from "@/hooks/useMessage" /*@*/
+
 // Función para formatear fechas de inputs al crear vehiculos en los apartados itv y ultima fecha de servicio 
 
 const toDateInputValue = (value) => {
@@ -45,10 +50,12 @@ const ProductCreate = () => {
   });
 
   // loading se usa para mostrar spinner mientras se carga el vehículo en modo edición
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false); /*@*/
+  const loading = useLoading(false); /*@*/
 
   // message se usa para mostrar errores o avisos en pantalla
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState(""); /*@*/
+   const message = useMessage(""); /*@*/
 
   // Si existe id, significa que estamos editando:
 
@@ -58,7 +65,11 @@ const ProductCreate = () => {
       if (!id) return; // Si no hay id, estamos creando; no hay informacion de vehiculos para cargar
 
       try {
-        setLoading(true);
+
+        message.clear(); /*@*/
+        loading.set(true); /*@*/
+
+        // setLoading(true); /*@*/
         const response = await fetch(`${API_URL}/products/${id}`, { 
           headers: { Authorization: `Bearer ${token}` },
         });   // se hace un GET para traer datos en el formulario
@@ -84,9 +95,12 @@ const ProductCreate = () => {
 
         
       } catch (error) {
-        setMessage("Error al cargar el vehiculo para editar");
+        // setMessage("Error al cargar el vehiculo para editar"); /*@*/
+        message.set("Error al cargar el vehículo para editar"); /*@*/
+
       } finally {
-        setLoading(false);
+        // setLoading(false); /*@*/
+        loading.set(false); /*@*/
       }
     };
     fetchProduct();
@@ -100,7 +114,8 @@ const ProductCreate = () => {
   // Usa el atributo name del input para actualizar el campo correcto
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+    // setMessage(""); /*@*/
+    message.clear(); /*@*/
 
 
     const url = id ? `${API_URL}/products/${id}` : `${API_URL}/products`; // Decide ruta y método según si hay id o no
@@ -118,15 +133,17 @@ const ProductCreate = () => {
       }); 
 
       if (!response.ok) {
-        if (response.status === 403) 
+        if (response.status === 403) {
           throw new Error("Solo los administradores pueden crear o editar Vehiculos"); //control de edicion y creacion limitado a administradores
+        }
         throw new Error(`Error HTTP: ${response.status}`);
       }
 
       // Si todo salió bien, se vuelve al inventario
       navigate("/products");
     } catch (error) {
-      setMessage(error.message || "Error al guardar el Vehiculo"); // Mensaje para el usuario 
+      // setMessage(error.message || "Error al guardar el Vehiculo"); /*@*/// Mensaje para el usuario 
+      message.set(err.message || "Error al guardar el vehículo"); /*@*/
     }
   };
 
@@ -136,12 +153,12 @@ const ProductCreate = () => {
     <div className="container mt-4">
 
       {/* Mensaje de error/aviso */}
-      {message && <div className="alert alert-danger">{message}</div>}
+      {message.value && <div className="alert alert-danger">{message.value}</div>}
 
       <h2 className="mb-4 text-center">{id ? "Editar vehículo" : "Crear vehículo"}</h2>
 
       {/* Si loading, se muestra spinner mientras se cargan los datos del vehículo */}
-      {loading ? (
+      {loading.value ? (
         <div className="text-center">
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Cargando...</span>

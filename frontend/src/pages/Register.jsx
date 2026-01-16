@@ -5,10 +5,19 @@
 import { useState } from "react";
 import { API_URL } from "@/const/api";
 
+import { useError } from "@/hooks/useError";
+import { useMessage } from "@/hooks/useMessage";
+import { useLoading } from "@/hooks/useLoading";
+
+
 const Register = () => {
-  const [form, setForm] = useState({ email: "", password: "" }); // Estads del formulario
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [form, setForm] = useState({ email: "", password: "" }); // Estads del formulario/*@*/
+  // const [error, setError] = useState("");/*@*/
+  // const [success, setSuccess] = useState(""); /*@*/
+
+  const error = useError("");
+  const success = useMessage("");
+  const loading = useLoading(false);
 
 
   // Manejador de cambios del formulario (email/password), pone los vlores en el set del formulario
@@ -22,8 +31,11 @@ const Register = () => {
     e.preventDefault();
 
     // Se limpian mensajes 
-    setError("");
-    setSuccess("");
+    // setError("");/*@*/
+    // setSuccess("");/*@*/
+    error.clear();
+    success.clear();
+    loading.set(true);
 
     try {
       
@@ -45,17 +57,21 @@ const Register = () => {
       }
 
       // Si todo salió bien, mostraremos feedback positivo y se hace limpieza del formulario setForm("")
-      setSuccess("Usuario registrado correctamente. Ahora puedes iniciar sesión");
+      // setSuccess("Usuario registrado correctamente. Ahora puedes iniciar sesión");/*@*/
+      success.set("Usuario registrado correctamente. Ahora puedes iniciar sesión"); /*@*/
       setForm({ email: "", password: "" });
     } catch (err) {
       //mensaje de error de registro
-      setError(err.message);
+      // setError(err.message); /*@*/
+      error.set(err.message);/*@*/
+      } finally {/*@*/
+      loading.set(false);/*@*/
     }
   };
 
   return (
 
-
+  //*@* .value //
     // Contenedor de pantalla completa, configuración bastante similar en diseño que el Login (se explica en login el detalle)
 
     <div className="min-vh-100 d-flex w-100 overflow-hidden">
@@ -84,21 +100,26 @@ const Register = () => {
         <div style={{ width: "100%", maxWidth: "420px" }}>
           <h2 className="text-center mb-4">Registro de nuevo usuario</h2>
 
-          {error && <div className="alert alert-danger">{error}</div>}
-          {success && <div className="alert alert-success">{success}</div>}
+          {error.value && <div className="alert alert-danger">{error.value}</div>}
+          {success.value && <div className="alert alert-success">{success.value}</div>}
 
           <form onSubmit={handleSubmit} className="mx-auto">
             <div className="mb-3">
               <label className="form-label">Correo electrónico</label>
-              <input type="email" name="email" value={form.email} onChange={handleChange} className="form-control" required/>
-            </div>
+              <input type="email" name="email" value={form.email} onChange={handleChange} className="form-control" required  disabled={loading.value}  />  
+            </div> 
 
             <div className="mb-3">
-              <label className="form-label">Contraseña</label> <input type="password" name="password" value={form.password} onChange={handleChange} className="form-control" required/>
+              <label className="form-label">Contraseña</label> <input type="password" name="password" value={form.password} onChange={handleChange} className="form-control" required  disabled={loading.value} /> 
             </div>
 
-            <button type="submit" className="btn btn-success w-100">
+            {/* <button type="submit" className="btn btn-success w-100">
               Crear cuenta
+            </button> */}
+            
+            {/* @ */}
+            <button type="submit" className="btn btn-success w-100" disabled={loading.value}>
+              {loading.value ? "Creando..." : "Crear cuenta"}
             </button>
 
             <p className="text-center mt-3">

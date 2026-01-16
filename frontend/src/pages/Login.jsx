@@ -6,6 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { API_URL } from "@/const/api";
 
+
+// Hooks personalizados
+import { useError } from "@/hooks/useError"; /*@*/
+import { useLoading } from "@/hooks/useLoading"; /*@*/
+import { useMessage } from "@/hooks/useMessage"; /*@*/
+
 const Login = () => {
   const navigate = useNavigate(); // Hook de navegación para redirigir sin recargar la página
 
@@ -14,13 +20,20 @@ const Login = () => {
   // Estado del formulario
   const [form, setForm] = useState({ email: "", password: "" });
 
-  // Estados que dab avisos al usuario
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
-  // loading bloquea inputs botones en lo que se procesa login
-  const [loading, setLoading] = useState(false);
+  /*@*/
+  // Estados reutilizables (en lugar de useState repetidos)
+  const error = useError("");        // Mensajes de error
+  const success = useMessage("");    // Mensajes de éxito
+  const loading = useLoading(false); // Bloquea inputs/botones durante la petición
 
+  // // Estados que dab avisos al usuario
+  // const [error, setError] = useState("");
+  // const [success, setSuccess] = useState("");
+
+  // // loading bloquea inputs botones en lo que se procesa login
+  // const [loading, setLoading] = useState(false);
+/*@*/
 
   // Manejador de cambios del formulario 
   // e.target.name coincide con "email" o "password" según el input
@@ -33,10 +46,15 @@ const Login = () => {
    const handleSubmit = async (e) => {
     e.preventDefault();   
 
-    // Limpia mensajes previos y activa loading
-    setError("");
-    setSuccess("");
-    setLoading(true);
+    // // Limpia mensajes previos y activa loading
+    // setError("");
+    // setSuccess("");
+    // setLoading(true);
+
+     // Limpieza de mensajes antes de intentar login
+    error.clear();/*@*/
+    success.clear();/*@*/
+    loading.set(true);/*@*/
 
     try {
 
@@ -60,19 +78,24 @@ const Login = () => {
       login({ token: data.token, isAdmin: data.isAdmin });
 
       // Mensaje de éxito de inicio y redirección al inventario
-      setSuccess("Inicio de sesión exitoso");
+      // setSuccess("Inicio de sesión exitoso");/*@*/
+        success.set("Inicio de sesión exitoso");
       setTimeout(() => {
         navigate("/products");
       }, 600); // se hace una pausa de 0.6 segs para UX en donde se pueda ver el mensaje de inicio de sesión
     } catch (err) {
       // Muestra el error de credenciales o de servidor
-      setError(err.message);
+      // setError(err.message); /*@*/
+      error.set(err.message); /*@*/
     } finally {
       // Se apaga loading siempre (haya éxito o error)
-      setLoading(false);
+      // setLoading(false);/*@*/
+      loading.set(false); /*@*/
     }
   };
 
+
+  //*@* .value//
   return (
     <div className="min-vh-100 d-flex w-100 overflow-hidden">
       <div style={{ width: "60vw" }} className="d-none d-lg-flex flex-column">{/* Responsive config d-none d-lg-flex: Columna izquierda (solo se muestra en desktop "desde d-none hasta "lg" se muestra") */}
@@ -102,24 +125,24 @@ const Login = () => {
           <h2 className="text-center mb-4">Iniciar sesión</h2>
 
           {/* Mensajes de estado */}
-          {error && <div className="alert alert-danger">{error}</div>}
-          {success && <div className="alert alert-success">{success}</div>}
+          {error.value && <div className="alert alert-danger">{error.value}</div>}
+          {success.value && <div className="alert alert-success">{success.value}</div>}
 
           {/* Formulario controlado */}
           <form onSubmit={handleSubmit} className="mx-auto">
             <div className="mb-3">
               <label className="form-label">Correo electrónico</label>
-              <input type="email" name="email" value={form.email} onChange={handleChange} className="form-control" required disabled={loading}/>
+              <input type="email" name="email" value={form.email} onChange={handleChange} className="form-control" required disabled={loading.value}/>
             </div>
 
             <div className="mb-3">
               <label className="form-label">Contraseña</label>
-              <input type="password" name="password" value={form.password} onChange={handleChange} className="form-control" required disabled={loading}/>
+              <input type="password" name="password" value={form.password} onChange={handleChange} className="form-control" required disabled={loading.value}/>
             </div>
 
             {/* Botón deshabilitado durante loading para evitar doble envío https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/disabled */}
-            <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-              {loading ? "Ingresando..." : "Iniciar sesión"}
+            <button type="submit" className="btn btn-primary w-100" disabled={loading.value}>
+              {loading.value ? "Ingresando..." : "Iniciar sesión"}
             </button>
 
             {/* Enlace a registro de ususarips*/}

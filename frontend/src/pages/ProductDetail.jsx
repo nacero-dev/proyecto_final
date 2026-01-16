@@ -2,6 +2,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { API_URL } from "@/const/api";
 
+// Hooks personalizados *@*
+import { useError } from "@/hooks/useError";
+import { useLoading } from "@/hooks/useLoading";
+import { useMessage } from "@/hooks/useMessage";
+
 // Función auxiliar para formatear fechas en la UI
 
 // Función para formatear fechas en la tabla (explicacion en Productslist "replica")
@@ -20,9 +25,14 @@ const ProductDetail = () => {
   const navigate = useNavigate();  // Hook de navegación para volver al inventario o ir a editar
 
   const [product, setProduct] = useState(null); // Estado del vehículo cargado desde el backend
-  const [loading, setLoading] = useState(true); // Estado para mostrar spinner mientras se carga
-  const [error, setError] = useState(null);   // Estado para errores
-  const [message, setMessage] = useState(""); // Mensajes informativos para el usuario
+ 
+  const loading = useLoading(true); /*@*/
+  const error = useError(null); /*@*/
+  const message = useMessage(""); /*@*/
+
+  // const [loading, setLoading] = useState(true); /*@*/// Estado para mostrar spinner mientras se carga
+  // const [error, setError] = useState(null);  /*@*/// Estado para errores
+  // const [message, setMessage] = useState(""); /*@*/// Mensajes informativos para el usuario
 
   // Token y rol guardados en localStorage al iniciar sesión
   const token = localStorage.getItem("token");
@@ -33,6 +43,9 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        error.clear(); /*@*/
+        loading.set(true); /*@*/
+
         const response = await fetch(`${API_URL}/products/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -51,9 +64,11 @@ const ProductDetail = () => {
         setProduct(data);
 
       } catch (err) {
-        setError(err.message); // Si falla, se guarda el mensaje para mostrarlo en pantalla
+        // setError(err.message); //*@*/// Si falla, se guarda el mensaje para mostrarlo en pantalla
+        error.set(err.message); /*@*/
       } finally {
-        setLoading(false);  // Siempre se apaga el loading al final
+        loading.set(false);
+        //setLoading(false); //*@*/// // Siempre se apaga el loading al final
       }
     };
 
@@ -64,11 +79,13 @@ const ProductDetail = () => {
 
   //Elimina el vehículo actual
   const handleDelete = async () => {
-    setMessage(""); // Limpia mensajes previos
+    // setMessage(""); // Limpia mensajes previos
+    message.clear(); // Limpia mensajes previos
 
     // si no es admin impide realizar el DELETE
     if (!isAdmin) {
-      setMessage("No tienes permisos para eliminar vehículos"); //en caso de que user no admin emitir mensaje de no autorizacion
+      // setMessage("No tienes permisos para eliminar vehículos"); /*@*///en caso de que user no admin emitir mensaje de no autorizacion
+      message.set("No tienes permisos para eliminar vehículos"); /*@*/
       return;
     }
 
@@ -85,12 +102,14 @@ const ProductDetail = () => {
       // Si elimina correctamente, se regresa al inventario
       navigate("/products");
     } catch (err) {
-      setMessage("No se pudo eliminar el vehículo."); // Mensaje de informacion de error para el usuario
+      // setMessage("No se pudo eliminar el vehículo."); /*@*/// Mensaje de informacion de error para el usuario
+      message.set("No se pudo eliminar el vehículo."); /*@*/
     }
   };
 
   // Mientras loading es true se renderiza spinner
-  if (loading) {
+  // if (loading) {  /*@*/
+  if (loading.value) {   /*@*/
     return (
       <div className="container mt-5 text-center">
         <div className="spinner-border text-primary" role="status">
@@ -101,10 +120,12 @@ const ProductDetail = () => {
   }
 
   // caso Si se genera un error se muestra una alerta dependiendo del status error
-  if (error) {
+  // if (error) { /*@*/
+  if (error.value) { /*@*/
     return (
       <div className="container mt-4">
-        <div className="alert alert-danger">{error}</div>
+        {/* <div className="alert alert-danger">{error}</div> */}
+        <div className="alert alert-danger">{error.value}</div> 
       </div>
     );
   }
@@ -126,7 +147,7 @@ const ProductDetail = () => {
     <div className="container mt-4">
 
       {/* Mensajes informativos en cuanto a los vehiculos de la tabla */}
-      {message && <div className="alert alert-info">{message}</div>}
+      {message.value && <div className="alert alert-info">{message.value}</div>}
 
       <h2 className="mb-4 text-center">Detalle del vehículo</h2>
 
