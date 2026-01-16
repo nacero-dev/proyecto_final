@@ -18,9 +18,10 @@ const Contact = () => {
 
   // Los query params son pares clave=valor que van después del signo "?" y sirven para enviar datos extra en la ruta
   // sin cambiar el path. Ej: /contact?vehicle=Ferrari%20Enzo&id=123  → vehicle="Ferrari Enzo", id="123"ç
-  //
+  // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
 
-  // Datos del vehículo (vienen desde ProductsList/ProductDetail)
+
+  // Datos del vehículo (vienen desde ProductsList/ProductDetail) 
   const vehicleName = searchParams.get("vehicle") || "";
   const vehicleId = searchParams.get("id") || "";
 
