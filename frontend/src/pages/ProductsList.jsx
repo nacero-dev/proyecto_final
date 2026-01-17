@@ -29,6 +29,11 @@ const ProductsList = () => {
   const token = localStorage.getItem("token");  // Token JWT guardado en localStorage al hacer login (se usa para Authorization)
   const isAdmin = localStorage.getItem("isAdmin") === "true"; //Rol guardado en localStorage como string ("true"/"false"), se convierte a dato boolean
 
+  //Estado del texto de búsqueda
+  const [search, setSearch] = useState("");
+
+  // Estado para saber si actualmente se muestran resultados filtrados
+  const [isFiltering, setIsFiltering] = useState(false);
 
 
   // Helper para mostrar mensajes temporales (evita repetir setTimeout en muchos lugares)
@@ -65,6 +70,46 @@ const ProductsList = () => {
       // La respuesta llega como JSON y se convierte a objeto con response.json()
       const data = await response.json();
       setProducts(data); // Se guarda la lista en el estado para renderizar la tabla
+
+      // Si se cargando el listado completo, se deja de estar en modo “filtrado” por lo tanto  setIsFiltering(false)
+
+      setIsFiltering(false);
+    } catch (err) {
+      error.set(err.message || "No se pudieron cargar los Vehículos");
+    } finally {
+      loading.set(false);
+    }
+  };
+
+  // Consulta al backend usando el endpoint con operadores de MongoDB (GET /products/filter?q=fer)
+  // En el backend, "q" se usa con $regex + $options:"i" para coincidencias parciales sin distinguir mayúsculas/minúsculas
+  const fetchProductsByName = async (query) => {
+    try {
+      error.clear();
+      message.clear();
+      loading.set(true);
+
+      // encodeURIComponent convierte el texto del usuario a un formato seguro para URL espacios, acentos, símbolos, por ejemplo "rolls royce" -> "rolls%20royce"
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+
+      const q = encodeURIComponent(query);
+
+      const response = await fetch(`${API_URL}/products/filter?q=${q}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) throw new Error("No autorizado: inicia sesión");
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setProducts(data); // reemplaza la tabla por los resultados filtrados
+      setIsFiltering(true); // estado filtrando
+
+
     } catch (err) {
       error.set(err.message || "No se pudieron cargar los Vehículos");
     } finally {
@@ -76,6 +121,31 @@ const ProductsList = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+
+
+  // submit del buscador
+  // si el input está vacío: vuelve a cargar inventario completo
+  // si hay texto: filtra por nombre con /products/filter?q=...
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    const q = search.trim();
+
+    // Si no hay texto, se interpreta como “volver al listado completo”
+    if (!q) {
+      fetchProducts();
+      return;
+    }
+
+    fetchProductsByName(q);
+  };
+
+  //limpiar buscador y volver al inventario completo
+  const handleClearSearch = () => {
+    setSearch("");
+    fetchProducts();
+  };
 
 
   // Elimina un vehículo por ID
@@ -124,8 +194,35 @@ const ProductsList = () => {
       {error.value && <div className="alert alert-danger">{error.value}</div>}
       {message.value && <div className="alert alert-info">{message.value}</div>}
 
-      <h2 className="mb-4 fw-bold fs-1 text-center">SuperAutos</h2>
+      <h2 className="mb-4 fw-bold fs-1 text-center">SuperAutos</h2> 
       <h2 className="mb-4 text-center">Inventario de Vehiculos</h2>
+
+      {/* Barra de búsqueda por nombre usa query param q, en backend aplica $regex + $options:"i" */}
+      <form onSubmit={handleSearchSubmit} className="mb-3">
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder='Buscar por nombre'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <button className="btn btn-outline-primary" type="submit">
+            Buscar
+          </button>
+
+          {/* Botón para volver al inventario completo */}
+          {(isFiltering || search.trim()) && (
+            <button className="btn btn-outline-secondary" type="button" onClick={handleClearSearch}>
+              Limpiar
+            </button>
+          )}
+        </div>
+
+
+      </form>
+
 
       {/* Botón de alta de vehiculo solo visible para admin */}
       {isAdmin && (

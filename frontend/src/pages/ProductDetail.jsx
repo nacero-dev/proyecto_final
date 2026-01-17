@@ -208,7 +208,7 @@ const ProductDetail = () => {
           </p>
 
           {/* Botones de navegacion de acciones al final de la tabla */}
-          <div className="d-flex gap-2 mt-3">
+          <div className="d-grid gap-2 d-sm-flex mt-3">
             <button
               type="button"
               className="btn btn-outline-secondary"
@@ -217,14 +217,15 @@ const ProductDetail = () => {
               Volver al inventario
             </button>
 
-            <a
-              href={`/contact?vehicle=${encodeURIComponent(product.name)}&id=${product._id}`}
+            <button
+              type="button"
               className="btn btn-outline-success"
+              onClick={() => navigate(`/contact?vehicle=${encodeURIComponent(product.name)}&id=${product._id}`)}
             >
               Contactar
-            </a>
+            </button>
 
-            {/* Acciones del administrador de edición y eliminción */}
+            {/* Acciones del administrador de edicion y eliminacion*/}
             {isAdmin && (
               <>
                 <button
@@ -245,6 +246,7 @@ const ProductDetail = () => {
               </>
             )}
           </div>
+
 
           {/* ID para referencia en MongoDB "mismo de la URL" */}
 

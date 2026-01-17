@@ -25,7 +25,7 @@ const AdminUsers = () => {
   // Consulta todos los usuarios al backend
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${API_URL}/admin/users`, { 
+      const res = await fetch(`${API_URL}/admin/users`, {
         headers: { Authorization: `Bearer ${token}` },
       }); // JWT requerido para autorización
       if (!res.ok) throw new Error("Error al cargar los usuarios");
@@ -57,17 +57,17 @@ const AdminUsers = () => {
   };
 
   // Elimina un usuario por ID
-    const deleteUser = async (id) => {
+  const deleteUser = async (id) => {
     try {
-      const res = await fetch(`${API_URL}/admin/users/${id}`, { 
+      const res = await fetch(`${API_URL}/admin/users/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Error al eliminar usuario");
       setUsers(users.filter((user) => user._id !== id)); // Actualiza la lista de usuarios eliminando el usuario del estado sin recargar toda la página
-      
+
       // Mensaje de confirmación y se oculta luego de 3 segundos
-      setMessage("Usuario eliminado correctamente"); 
+      setMessage("Usuario eliminado correctamente");
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       setError(err.message);
@@ -103,47 +103,56 @@ const AdminUsers = () => {
 
       {/* Tabla Bootstrap con los usuarios */}
 
-      <table className="table table-striped table-bordered">
-        <thead className="table-dark">
-          <tr>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          {/* Se renderiza una fila por usuario */}
-
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td>{user.email}</td>
-
-              {/* El rol se interpreta desde user.isAdmin */}
-              <td>{user.isAdmin ? "Administrador" : "Visor"}</td>
-
-              <td>
-
-                {/* onClick para cambiar rol alternando entre admin y visor */}
-                <button
-                  onClick={() => toggleRole(user._id)}
-                  className="btn btn-sm btn-warning me-2"
-                >
-                  Cambiar rol
-                </button>
-
-                {/* onClick para eliminar usuario de la base de datos */}
-                <button
-                  onClick={() => deleteUser(user._id)} 
-                  className="btn btn-sm btn-danger"
-                >
-                  Eliminar
-                </button>
-              </td>
+      <div className="table-responsive">
+        <table className="table table-striped table-bordered align-middle">
+          <thead className="table-dark">
+            <tr>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+
+            {/* Se renderiza una fila por usuario */}
+
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td>{user.email}</td>
+
+                {/* El rol se interpreta desde user.isAdmin */}
+                <td>{user.isAdmin ? "Administrador" : "Visor"}</td>
+
+                <td>
+                  <div className="d-grid gap-2 d-sm-flex">
+
+
+                    {/* onClick para cambiar rol alternando entre admin y visor */}
+                    <button
+                      onClick={() => toggleRole(user._id)}
+                      className="btn btn-sm btn-warning"
+                      type="button"
+                    >
+                      Cambiar rol
+                    </button>
+
+                    {/* onClick para eliminar usuario de la base de datos */}
+                    <button
+                      onClick={() => deleteUser(user._id)}
+                      className="btn btn-sm btn-danger"
+                      type="button"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </td>
+
+
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
